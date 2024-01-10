@@ -1,24 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
+import ContentWrapper from './pages/base/ContentWrapper.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContentWrapper>
+      <h1 className="h3 mb-3">Tables</h1>
+    </ContentWrapper>
   );
 }
 
