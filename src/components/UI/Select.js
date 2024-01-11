@@ -1,20 +1,23 @@
 import React from "react";
 
-const Select = ({
+const Select = React.forwardRef(({
   id,
   label,
+  hidelabel = false,
   divStyle = "",
   labelStyle = "",
   options,
   ...props
-}) => {
-  // const divStyling = divStyle ? `className=${divStyle}` : ''
+}, ref) => {
   return (
     <div className={divStyle}>
-      <label htmlFor={id} className={labelStyle}>
-        {label}
-      </label>
-      <select id={id} {...props}>
+      {hidelabel === true && (
+        <label htmlFor={id} className={labelStyle}>
+          {label}
+        </label>
+      )}
+
+      <select id={id} {...props} ref={ref}>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}
@@ -23,6 +26,6 @@ const Select = ({
       </select>
     </div>
   );
-};
+});
 
 export default Select;

@@ -19,23 +19,24 @@ const Table = ({ title, description, tableData}) => {
     return (
       <tr key={data.id}>
         <td>{data.id}</td>
-        <td>{data.name}</td>
-        <td>{data.phone}</td>
+        <td>{data.username}</td>
+        <td>{data.mobile}</td>
+        <td>{data.role}</td>
       </tr>
     );
   });
   return (
-    <div className="row">
-      <div className="col-12 col-xl-12">
-        <div className="card">
-            {title && description && 
-                <div className="card-header">
-                <h5 className="card-title">{title}</h5>
-                <h6 className="card-subtitle text-muted">
-                {description}
-                </h6>
-              </div>
-            }
+    // <div className="row">
+      // <div className="col-12 col-xl-12">
+        // <div className="card">
+            // {title && description && 
+            //     <div className="card-header">
+            //     <h5 className="card-title">{title}</h5>
+            //     <h6 className="card-subtitle text-muted">
+            //     {description}
+            //     </h6>
+            //   </div>
+            // }
           
           <table className="table table-bordered">
             <thead>
@@ -45,9 +46,9 @@ const Table = ({ title, description, tableData}) => {
             </thead>
             <tbody>{tableBody}</tbody>
           </table>
-        </div>
-      </div>
-    </div>
+        // </div>
+      // </div>
+    // </div>
   );
 };
 

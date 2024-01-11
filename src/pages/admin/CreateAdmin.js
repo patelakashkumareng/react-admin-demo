@@ -43,7 +43,6 @@ const CreateAdmin = () => {
                 type="text"
                 name="username"
                 placeholder="Username"
-                // ref={userNameRef}
                 label="Username"
                 divStyle="form-group col-md-6"
                 {...register("username", {
@@ -123,7 +122,7 @@ const CreateAdmin = () => {
                     name="status"
                     className="form-check-input"
                     type="radio"
-                    label="Active"
+                    label="In active"
                     labelStyle="form-check form-check-inline"
                     value="0"
                   />

@@ -1,7 +1,14 @@
 import React from "react";
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 
 const SideBar = () => {
+  const location = useLocation();
+  const getNavLinkClass = path => {
+    return location.pathname === path
+    ? "sidebar-item active"
+    : "sidebar-item";
+     };
+
   return (
     <nav id="sidebar" className="sidebar">
       <div className="sidebar-content ">
@@ -26,17 +33,17 @@ const SideBar = () => {
               className="sidebar-dropdown list-unstyled collapse show"
               data-parent="#sidebar"
             >
-              <li className="sidebar-item">
+              <li className={getNavLinkClass("/admin/list")}>
                 <NavLink className="sidebar-link" to={`/admin/list`}>
                   Admin
                 </NavLink>
               </li>
-              <li className="sidebar-item">
+              <li className={getNavLinkClass("/admin/create")}>
                 <NavLink className="sidebar-link" to={`/admin/create`}>
                   Create Admin
                 </NavLink>
               </li>
-              <li className="sidebar-item">
+              <li className={getNavLinkClass("/")}>
                 <NavLink className="sidebar-link" to={`/`}>
                   User
                 </NavLink>
