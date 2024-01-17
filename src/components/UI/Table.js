@@ -1,53 +1,68 @@
 import React from "react";
 
-const Table = ({ title, description, tableData}) => {
-    const data = {
-        title: title || '',
-        description: description || '',
-        table:{
-            header: tableData.header || [],
-            row: tableData.row || [],
-        }
-    }
+const Table = ({
+  title = "",
+  description = "",
+  columns = [],
+  rows = [],
+  perPageRecords = 0,
+  currentPage = 1,
+  showSerialNumber = false,
+}) => {
+  const tableHeader = (
+    <tr>
+      {showSerialNumber && <th>Sr No</th>}
+      {columns.map((column) => {
+        return <th key={column.accessor}>{column.label}</th>;
+      })}
+    </tr>
+  );
 
-    const tableHeader = data.table?.header?.map((data) => {
-        return (
-            <th key={data.uiName}>{data.uiName}</th>
-        );
-      });
-  const tableBody = data.table?.row?.map((data) => {
-    return (
-      <tr key={data.id}>
-        <td>{data.id}</td>
-        <td>{data.username}</td>
-        <td>{data.mobile}</td>
-        <td>{data.role}</td>
-      </tr>
-    );
-  });
+  let srNumber = perPageRecords * (currentPage - 1);
+  let headerLength = columns.length + (showSerialNumber ? 1 : 0)
+
+  let tableBody = <tr><td colSpan={headerLength} className="text-center">No records found</td></tr>;
+
+  if(rows.length > 0){
+    tableBody = rows.map((row) => {
+      srNumber++;
+      return (
+        <tr key={row.id}>
+          {showSerialNumber && <td>{srNumber}</td>}
+          {columns.map((column) => {
+            if (column.format) {
+              return (
+                <td key={column.accessor}>
+                  {column.format(row[column.accessor])}
+                </td>
+              );
+            }
+            return <td key={column.accessor}>{row[column.accessor]}</td>;
+          })}
+        </tr>
+      );
+    });
+  }
+  
   return (
     // <div className="row">
-      // <div className="col-12 col-xl-12">
-        // <div className="card">
-            // {title && description && 
-            //     <div className="card-header">
-            //     <h5 className="card-title">{title}</h5>
-            //     <h6 className="card-subtitle text-muted">
-            //     {description}
-            //     </h6>
-            //   </div>
-            // }
-          
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                {tableHeader}
-              </tr>
-            </thead>
-            <tbody>{tableBody}</tbody>
-          </table>
-        // </div>
-      // </div>
+    // {/* <div className="col-12 col-xl-12"> */}
+    <>
+      {/* {(title || description) && (
+        <div className="card-header">
+          {title && <h5 className="card-title">{title}</h5>}
+          {description && (
+            <h6 className="card-subtitle text-muted">{description}</h6>
+          )}
+        </div>
+      )} */}
+
+      <table className="table table-striped table-hover">
+        <thead>{tableHeader}</thead>
+        <tbody>{tableBody}</tbody>
+      </table>
+    </>
+    // </div>
     // </div>
   );
 };

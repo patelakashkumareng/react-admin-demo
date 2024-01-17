@@ -7,8 +7,6 @@ import Button from "../../components/UI/Button";
 import Radio from "../../components/UI/Radio";
 import CheckBox from "../../components/UI/CheckBox";
 
-// const onSubmit = data => console.log(data);
-
 const CreateAdmin = () => {
   const {
     register,

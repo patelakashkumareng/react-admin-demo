@@ -4,14 +4,14 @@ import Select from "../../components/UI/Select";
 import Button from "../../components/UI/Button";
 
 const statusList = [
-  { id: "ACTIVE", name: "Active" },
-  { id: "INACTIVE", name: "Inactive" },
-  { id: "ALL", name: "All" },
+  { value: "all", label: "All" },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" }
 ];
 
 const AdminListFilter = (props) => {
-  const keywordRef = useRef('')
-  const statusRef = useRef("ALL")
+  const keywordRef = useRef()
+  const statusRef = useRef()
 
   const submitSearchHandler = (event) => {    
     event.preventDefault();
@@ -19,9 +19,7 @@ const AdminListFilter = (props) => {
     const keyword = keywordRef.current.value
     const status = statusRef.current.value
 
-    if(keyword.trim().length > 0 || status !== "ALL"){
-      console.log("search");
-
+    if(keyword.trim().length > 0 || status){
       //submit data
       props.onApplyFilter({
         keyword,
@@ -29,6 +27,12 @@ const AdminListFilter = (props) => {
       })
     }
   };
+
+  const clearSearchHandler = () => {
+    props.onClearFilter()
+    keywordRef.current.value = ""
+    statusRef.current.value = "all"
+  }
   return (
     <form onSubmit={submitSearchHandler}>
       <div className="form-row">
@@ -52,7 +56,7 @@ const AdminListFilter = (props) => {
           <Button type="submit" className="btn btn-primary mr-1">
             Search
           </Button>
-          <Input type="button" className="btn btn-primary mr-1" value="Clear"/>
+          <Input type="button" className="btn btn-primary mr-1" value="Clear" hideDiv={true} onClick={clearSearchHandler}/>
         </div>
       </div>
     </form>

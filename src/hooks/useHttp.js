@@ -5,7 +5,7 @@ const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendRequest = useCallback(async (config, applyData) => {
+  const sendRequest = useCallback(async (config) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -18,11 +18,13 @@ const useHttp = () => {
       );
 
       const data = response.data;
-      applyData(data)
+      return data
     } catch (err) {
       setError(err.message || "Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
+    
   }, []);
   return {
     isLoading,
