@@ -18,9 +18,9 @@ const CreateAdmin = () => {
   }
 
   const roleList = [
-    { id: 1, name: "Maintainer" },
-    { id: 2, name: "Owner" },
-    { id: 3, name: "Developer" },
+    { value: 1, label: "Maintainer" },
+    { value: 2, label: "Owner" },
+    { value: 3, label: "Developer" },
   ];
 
   return (
@@ -103,8 +103,7 @@ const CreateAdmin = () => {
                 divStyle="form-group col-md-6"
                 options={roleList}
               />
-              <div className="card-body">
-                <div>
+              <div className="form-group col-md-6">
                   <Radio
                     id="status1"
                     name="status"
@@ -124,15 +123,16 @@ const CreateAdmin = () => {
                     labelStyle="form-check form-check-inline"
                     value="0"
                   />
-                </div>
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-row">
+            <div className="form-group col-md-6">
               <CheckBox
                 className="custom-control-input"
                 labelStyle="custom-control custom-checkbox m-0"
                 text="Is Master Admin.?"
               />
+            </div>
             </div>
             <Button type="submit" className="btn btn-primary">
               Submit
