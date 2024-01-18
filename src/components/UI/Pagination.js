@@ -20,7 +20,7 @@ const createPagination = ({ totalRecords, perPage, current = 1 }) => {
   };
 };
 
-const Pagination = ({ currentPage = 1, perPage, recordsInCurrentPage = 0, totalRecords = 0, onPerPageChange, onPageChange }) => {
+const Pagination = ({ currentPage = 1, perPage, totalRecords = 0, recordsInCurrentPage = 0, onPerPageChange, onPageChange }) => {
   currentPage = parseInt(currentPage)
   perPage = parseInt(perPage)
   const perPageList = [

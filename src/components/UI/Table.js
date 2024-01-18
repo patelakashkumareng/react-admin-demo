@@ -45,25 +45,29 @@ const Table = ({
   }
   
   return (
-    // <div className="row">
-    // {/* <div className="col-12 col-xl-12"> */}
+    <div className="row">
+    <div className="col-12 col-xl-12">
     <>
-      {/* {(title || description) && (
+      {(title || description) && (
         <div className="card-header">
           {title && <h5 className="card-title">{title}</h5>}
           {description && (
             <h6 className="card-subtitle text-muted">{description}</h6>
           )}
         </div>
-      )} */}
+      )}
 
+      <div className="table-responsive">
       <table className="table table-striped table-hover">
         <thead>{tableHeader}</thead>
         <tbody>{tableBody}</tbody>
       </table>
+      </div>
+
+      
     </>
-    // </div>
-    // </div>
+    </div>
+    </div>
   );
 };
 

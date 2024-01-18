@@ -1,11 +1,14 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { AdminListAction } from "../../store/admin/AdminSlice";
+import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
-import Table from "../../components/UI/Table";
+import { Table, Pagination, Loading } from "../../components/index";
+// import { isEmptyObject } from "./../../helpers/functions";
+// import { ReactComponent as EditIcon } from "../../assets/svg/edit.svg";
+
 import useHttp from "../../hooks/useHttp";
-import Pagination from "../../components/UI/Pagination";
 import AdminListFilter from "./AdminListFilter";
-import Loading from "../../components/UI/Loading";
 
 import { PER_PAGE } from "../../config/constant";
 
@@ -23,55 +26,56 @@ const parseAdminStatusToApi = (status) => {
   return apiStatus;
 };
 
-const AdminList = (props) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(PER_PAGE);
-  const [adminList, setAdminList] = useState([]);
-  const [totalRecords, settotalRecords] = useState(0);
+const getQueryParams = (searchParams) => {
+  const result = Object.fromEntries([...searchParams]);
+  return result;
+};
 
-  const { isLoading, error, sendRequest: fetchData } = useHttp();
+const AdminList = (props) => {
+  const dispatch = useDispatch();
+
+  const currentPage = useSelector((state) => state.admin.currentPage);
+  const list = useSelector((state) => state.admin.list);
+  const perPage = useSelector((state) => state.admin.perPage);
+  const totalRecords = useSelector((state) => state.admin.totalRecords);
+
+  const { isLoading, error, sendRequest } = useHttp();
 
   let [searchParams, setSearchParams] = useSearchParams();
 
   const PageTitle = props.title;
-
-  const recordsInCurrentPage = adminList.length;
-
-  const getQueryParams = useCallback((searchParams) => {
-    const result = Object.fromEntries([...searchParams]);
-    return result;
-  }, []);
+  const recordsInCurrentPage = list.length;
 
   const queryParams = useMemo(
     () => getQueryParams(searchParams),
-    [searchParams, getQueryParams]
+    [searchParams]
   );
 
-  useEffect(() => {
-    const per_page = queryParams.per_page || PER_PAGE;
-    const keyword = queryParams.keyword;
-    const status = parseAdminStatusToApi(queryParams.status);
-    const page = queryParams.page;
+  const fetch = useCallback(
+    async (queryParams) => {
+      const per_page = queryParams.per_page || PER_PAGE;
+      const keyword = queryParams.keyword;
+      const status = parseAdminStatusToApi(queryParams.status);
+      const page = queryParams.page;
 
-    const apiRequestParams = {
-      filters: {},
-      per_page,
-    };
+      const apiRequestParams = {
+        filters: {},
+        per_page,
+      };
 
-    if (keyword) {
-      apiRequestParams["filters"]["keyword"] = keyword;
-    }
+      if (keyword) {
+        apiRequestParams["filters"]["keyword"] = keyword;
+      }
 
-    if (status != null) {
-      apiRequestParams["filters"]["status"] = status;
-    }
+      if (status != null) {
+        apiRequestParams["filters"]["status"] = status;
+      }
 
-    if (page) {
-      apiRequestParams["page"] = page;
-    }
+      if (page) {
+        apiRequestParams["page"] = page;
+      }
 
-    const fetchList = async () => {
-      const response = await fetchData({
+      const response = await sendRequest({
         url: "http://nodeadmin-api.twelfthman.io/api/admin/list",
         method: "POST",
         headers: {
@@ -80,7 +84,7 @@ const AdminList = (props) => {
         body: apiRequestParams,
       });
 
-      if (response.status !== 200) {
+      if (!response || response.status !== 200) {
         return;
       }
 
@@ -97,39 +101,40 @@ const AdminList = (props) => {
           createdAt: data.DateCreated,
           isMasterAdmin: data.MasterAdmin,
           status: parseAdminStatusToApp(data.Status),
-          action: "",
+          action: "", //(<a href="/#"><EditIcon/></a>)
         };
       });
 
-      setAdminList(data);
-      settotalRecords(total_records);
-      setCurrentPage(page);
-      setPerPage(per_page);
-    };
+      dispatch(
+        AdminListAction.fetchList({
+          list: data,
+          perPage: per_page,
+          currentPage: page,
+          totalRecords: total_records,
+        })
+      );
+    },
+    [sendRequest, dispatch]
+  );
 
-    fetchList();
-  }, [fetchData, queryParams]);
+  useEffect(() => {
+    fetch(queryParams);
+  }, [fetch, queryParams]);
 
   const applyFilterHandler = (filterParams) => {
-    setCurrentPage(1);
     const { keyword, status } = filterParams;
     setSearchParams({ keyword, status, per_page: perPage, page: 1 });
   };
 
   const clearFilterHandler = () => {
-    setCurrentPage(1);
-    setPerPage(PER_PAGE);
     setSearchParams();
   };
 
   const perPageChangeHandler = (per_page) => {
-    setCurrentPage(1);
-    setPerPage(per_page);
     setSearchParams({ ...queryParams, per_page, page: 1 });
   };
 
   const setCurrentPageHandler = (page) => {
-    setCurrentPage(page);
     setSearchParams({ ...queryParams, page });
   };
 
@@ -147,7 +152,6 @@ const AdminList = (props) => {
     { accessor: "status", label: "Status" },
     { accessor: "action", label: "Action" },
   ];
-  const rows = adminList;
 
   return (
     <ContentWrapper>
@@ -155,23 +159,23 @@ const AdminList = (props) => {
       <div className="card-header">
         <h5 className="card-title">
           Basic Table
-          <button className="btn btn-primary float-right">
+          <Link to={"/admin/create"} className="btn btn-primary float-right">
             Create {PageTitle}
-          </button>
+          </Link>
         </h5>
         <AdminListFilter
-              onApplyFilter={applyFilterHandler}
-              onClearFilter={clearFilterHandler}
-            />
+          onApplyFilter={applyFilterHandler}
+          onClearFilter={clearFilterHandler}
+        />
       </div>
-      
+
       <div className="row">
         <div className="col-12 col-xl-12">
           <div className="card">
             {!isLoading && (
               <Table
                 columns={columns}
-                rows={rows}
+                rows={list}
                 perPageRecords={perPage}
                 currentPage={currentPage}
                 showSerialNumber="true"
@@ -181,15 +185,15 @@ const AdminList = (props) => {
             {!isLoading && error && <p className="text-danger">{error}</p>}
 
             <div className="card-footer">
-                <Pagination
-                  currentPage={currentPage}
-                  perPage={perPage}
-                  totalRecords={totalRecords}
-                  recordsInCurrentPage={recordsInCurrentPage}
-                  onPerPageChange={perPageChangeHandler}
-                  onPageChange={(page) => setCurrentPageHandler(page)}
-                />
-              </div>
+              <Pagination
+                currentPage={currentPage}
+                perPage={perPage}
+                totalRecords={totalRecords}
+                recordsInCurrentPage={recordsInCurrentPage}
+                onPerPageChange={perPageChangeHandler}
+                onPageChange={(page) => setCurrentPageHandler(page)}
+              />
+            </div>
           </div>
         </div>
       </div>
