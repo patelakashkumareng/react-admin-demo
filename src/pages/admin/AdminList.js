@@ -5,8 +5,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
 // import { isEmptyObject } from "./../../helpers/functions";
-import ViewIcon from "../../assets/svg/eye.svg";
 import { config } from "../../config";
+import { Eye } from 'react-feather';
 
 import useHttp from "../../hooks/useHttp";
 import AdminListFilter from "./AdminListFilter";
@@ -31,6 +31,16 @@ const getQueryParams = (searchParams) => {
   const result = Object.fromEntries([...searchParams]);
   return result;
 };
+
+const View = (props) => {
+  const viewHandler = (event) => {
+    event.preventDefault()
+    const id = props.id
+  }
+  return(
+    <a href="/#" onClick={viewHandler}><Eye /></a> 
+  )
+}
 
 const AdminList = (props) => {
   const dispatch = useDispatch();
@@ -102,7 +112,7 @@ const AdminList = (props) => {
           createdAt: data.DateCreated,
           isMasterAdmin: data.MasterAdmin,
           status: parseAdminStatusToApp(data.Status),
-          action: (<Link to={"/#"} title="View"><img src={ViewIcon} alt="view"/></Link>)
+          action: (<View id={data.AdminID}/>),
         };
       });
 
