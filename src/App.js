@@ -1,9 +1,11 @@
-import ContentWrapper from './pages/base/ContentWrapper.js';
+import ContentWrapper from "./pages/base/ContentWrapper.js";
+import Modal from "./components/UI/Modal.js";
 
 function App() {
   return (
     <ContentWrapper>
-      <h1 className="h3 mb-3">Tables</h1>
+      <h2>Hello Word</h2>
+      <Modal title="Bootstrap Title">This is the title</Modal>
     </ContentWrapper>
   );
 }

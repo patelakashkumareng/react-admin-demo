@@ -5,7 +5,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
 // import { isEmptyObject } from "./../../helpers/functions";
-// import { ReactComponent as EditIcon } from "../../assets/svg/edit.svg";
+import ViewIcon from "../../assets/svg/eye.svg";
+import { config } from "../../config";
 
 import useHttp from "../../hooks/useHttp";
 import AdminListFilter from "./AdminListFilter";
@@ -76,7 +77,7 @@ const AdminList = (props) => {
       }
 
       const response = await sendRequest({
-        url: "http://nodeadmin-api.twelfthman.io/api/admin/list",
+        url: config.API_BASE_URL + "/admin/list",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ const AdminList = (props) => {
           createdAt: data.DateCreated,
           isMasterAdmin: data.MasterAdmin,
           status: parseAdminStatusToApp(data.Status),
-          action: "", //(<a href="/#"><EditIcon/></a>)
+          action: (<Link to={"/#"} title="View"><img src={ViewIcon} alt="view"/></Link>)
         };
       });
 
@@ -158,7 +159,7 @@ const AdminList = (props) => {
       {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
       <div className="card-header">
         <h5 className="card-title">
-          Basic Table
+          {PageTitle}
           <Link to={"/admin/create"} className="btn btn-primary float-right">
             Create {PageTitle}
           </Link>

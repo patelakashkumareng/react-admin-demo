@@ -8,7 +8,7 @@ import CreateAdmin from './pages/admin/CreateAdmin'
 const routes = createBrowserRouter([
     {path: '/', element: <App />},
     {path: '/login', element: <Login />},
-    {path: '/admin/list', element: <AdminList title="Admin List" />},
+    {path: '/admin/list', element: <AdminList />},
     {path: '/admin/create', element: <CreateAdmin />}
 ])
 

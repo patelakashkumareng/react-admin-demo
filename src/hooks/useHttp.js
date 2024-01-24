@@ -4,6 +4,7 @@ import axios from 'axios';
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [response, setResponse] = useState(null)
 
   const sendRequest = useCallback(async (config) => {
     setIsLoading(true);
@@ -18,9 +19,11 @@ const useHttp = () => {
       );
 
       const data = response.data;
+      setResponse(data)
       return data
     } catch (err) {
-      setError(err.message || "Something went wrong!");
+      setError(err.response.data.message || err.message || "Something went wrong!");
+      setResponse(err.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -29,6 +32,7 @@ const useHttp = () => {
   return {
     isLoading,
     error,
+    response,
     sendRequest
   }
 }

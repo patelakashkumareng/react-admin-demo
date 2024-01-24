@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ContentWrapper from "../base/ContentWrapper";
 import Input from "../../components/UI/Input";
@@ -6,26 +6,104 @@ import Select from "../../components/UI/Select";
 import Button from "../../components/UI/Button";
 import Radio from "../../components/UI/Radio";
 import CheckBox from "../../components/UI/CheckBox";
+import { Loading } from "../../components";
+import { config } from "./../../config/index";
+import { useNavigate } from "react-router-dom";
+
+import useHttp from "../../hooks/useHttp";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateAdmin = () => {
+  const [roles, setRoles] = useState([]);
+  const navigate = useNavigate();
+  const {
+    isLoading,
+    error,
+    response,
+    sendRequest: sendRequestForCreateAdmin,
+  } = useHttp();
+  const {
+    isLoading: roleListisLoading,
+    error: rolesListError,
+    sendRequest: sendRequestForRoleList,
+  } = useHttp();
+
+  const fetchRoles = useCallback(async () => {
+    const response = await sendRequestForRoleList({
+      url: config.API_BASE_URL + "/admin/role/list",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {},
+    });
+
+    if (response && response.data) {
+      setRoles(response.data);
+    }
+  }, [sendRequestForRoleList]);
+
+  const createAdmin = useCallback(
+    async (requestObject) => {
+      await sendRequestForCreateAdmin({
+        url: config.API_BASE_URL + "/admin/create",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: requestObject,
+      });
+    },
+    [sendRequestForCreateAdmin]
+  );
+
+  useEffect(() => {
+    fetchRoles();
+  }, [fetchRoles]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    console.log('data', data);
+  const onSubmit = async (data) => {
+    const requestObject = {
+      username: data.username,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      email: data.email,
+      mobile: data.mobile,
+      password: data.password,
+      status: data.status,
+      is_master_admin: data.isMasterAdmin ? 1 : 0,
+      role: data.role,
+    };
+
+    await createAdmin(requestObject);
+  };
+
+  const roleList = roles.map((role) => {
+    return {
+      value: role.RoleID,
+      label: role.RoleName,
+    };
+  });
+
+  if ((!roleListisLoading && rolesListError) || (!isLoading && error)) {
+    const errorMsg = error ? error : rolesListError;
+    toast.error(errorMsg, config.TOAST_UI);
   }
 
-  const roleList = [
-    { value: 1, label: "Maintainer" },
-    { value: 2, label: "Owner" },
-    { value: 3, label: "Developer" },
-  ];
+  if (!isLoading && !error && response) {
+    toast.success(response.message, config.TOAST_UI);
+    navigate("/admin/list");
+  }
 
   return (
     <ContentWrapper>
       <div className="card">
+        {(isLoading || roleListisLoading) && <Loading />}
         <div className="card-header">
           <h5 className="card-title">Form row</h5>
           <h6 className="card-subtitle text-muted">Bootstrap column layout.</h6>
@@ -33,6 +111,36 @@ const CreateAdmin = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-row">
+              <Input
+                id="firstname"
+                className={`form-control ${
+                  errors.firstname ? "is-invalid" : ""
+                }`}
+                type="text"
+                name="firstname"
+                placeholder="First Name"
+                label="Username"
+                divStyle="form-group col-md-6"
+                {...register("firstname", {
+                  required: "FirstName is required",
+                })}
+                error={errors.firstname?.message}
+              />
+              <Input
+                id="lastname"
+                className={`form-control ${
+                  errors.lastname ? "is-invalid" : ""
+                }`}
+                type="text"
+                name="lastname"
+                placeholder="Last Name"
+                label="Lastname"
+                divStyle="form-group col-md-6"
+                {...register("lastname", {
+                  required: "Last name is required",
+                })}
+                error={errors.lastname?.message}
+              />
               <Input
                 id="username"
                 className={`form-control ${
@@ -44,7 +152,7 @@ const CreateAdmin = () => {
                 label="Username"
                 divStyle="form-group col-md-6"
                 {...register("username", {
-                  required: "Username is required"
+                  required: "Username is required",
                 })}
                 error={errors.username?.message}
               />
@@ -102,37 +210,51 @@ const CreateAdmin = () => {
                 label="Role"
                 divStyle="form-group col-md-6"
                 options={roleList}
+                {...register("role")}
               />
               <div className="form-group col-md-6">
-                  <Radio
-                    id="status1"
-                    name="status"
-                    className="form-check-input"
-                    type="radio"
-                    label="Active"
-                    labelStyle="form-check form-check-inline"
-                    value="1"
-                  />
+                <Radio
+                  id="status1"
+                  name="status"
+                  className={`form-check-input ${
+                    errors.status ? "is-invalid" : ""
+                  }`}
+                  type="radio"
+                  label="Active"
+                  labelStyle="form-check form-check-inline"
+                  value="1"
+                  {...register("status", {
+                    required: "field is required",
+                  })}
+                  error={errors.status?.message}
+                />
 
-                  <Radio
-                    id="status0"
-                    name="status"
-                    className="form-check-input"
-                    type="radio"
-                    label="In active"
-                    labelStyle="form-check form-check-inline"
-                    value="0"
-                  />
+                <Radio
+                  id="status0"
+                  name="status"
+                  className={`form-check-input ${
+                    errors.status ? "is-invalid" : ""
+                  }`}
+                  type="radio"
+                  label="In active"
+                  labelStyle="form-check form-check-inline"
+                  value="0"
+                  {...register("status", {
+                    required: "field is required",
+                  })}
+                  error={errors.status?.message}
+                />
               </div>
             </div>
             <div className="form-row">
-            <div className="form-group col-md-6">
-              <CheckBox
-                className="custom-control-input"
-                labelStyle="custom-control custom-checkbox m-0"
-                text="Is Master Admin.?"
-              />
-            </div>
+              <div className="form-group col-md-6">
+                <CheckBox
+                  className="custom-control-input"
+                  labelStyle="custom-control custom-checkbox m-0"
+                  text="Is Master Admin.?"
+                  {...register("isMasterAdmin")}
+                />
+              </div>
             </div>
             <Button type="submit" className="btn btn-primary">
               Submit

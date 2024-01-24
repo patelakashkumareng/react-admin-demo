@@ -1,12 +1,12 @@
 import React from "react";
 
-const Radio = ({ id, label, labelStyle = "", ...props }) => {
+const Radio = React.forwardRef(({ id, label, labelStyle = "", ...props }, ref) => {
   return (
     <label htmlFor={id} className={labelStyle}>
-      <input id={id} {...props} />
+      <input ref={ref} {...props} id={id} />
       <span className="form-check-label">{label}</span>
     </label>
   );
-};
+});
 
 export default Radio;
