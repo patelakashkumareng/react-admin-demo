@@ -1,13 +1,12 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom";
+import { Users, Sliders } from "react-feather";
 
 const SideBar = () => {
   const location = useLocation();
-  const getNavLinkClass = path => {
-    return location.pathname === path
-    ? "sidebar-item active"
-    : "sidebar-item";
-     };
+  const getNavLinkClass = (path) => {
+    return location.pathname === path ? "sidebar-item active" : "sidebar-item";
+  };
 
   return (
     <nav id="sidebar" className="sidebar">
@@ -19,14 +18,29 @@ const SideBar = () => {
 
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
+          <li className={getNavLinkClass("/")}>
+            <NavLink
+              to={`/`}
+              className="sidebar-link"
+            >
+              <i className="align-middle" data-feather="sliders"></i>{" "}
+              <span className="align-middle">
+                <Sliders />
+                Dashboard
+              </span>
+            </NavLink>
+          </li>
           <li className="sidebar-item">
             <a
-              href="#dashboards"
+              href="/#"
               data-toggle="collapse"
               className="sidebar-link"
             >
               <i className="align-middle" data-feather="sliders"></i>{" "}
-              <span className="align-middle">Users</span>
+              <span className="align-middle">
+                <Users />
+                Users
+              </span>
             </a>
             <ul
               id="dashboards"
@@ -41,11 +55,6 @@ const SideBar = () => {
               <li className={getNavLinkClass("/admin/create")}>
                 <NavLink className="sidebar-link" to={`/admin/create`}>
                   Create Admin
-                </NavLink>
-              </li>
-              <li className={getNavLinkClass("/")}>
-                <NavLink className="sidebar-link" to={`/`}>
-                  User
                 </NavLink>
               </li>
             </ul>

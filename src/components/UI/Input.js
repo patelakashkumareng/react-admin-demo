@@ -4,7 +4,7 @@ const Input = React.forwardRef(
   (
     {
       id,
-      hidelabel = false,
+      showLabel = false,
       hideDiv = false,
       label,
       divStyle = "",
@@ -17,7 +17,7 @@ const Input = React.forwardRef(
       <>
         {hideDiv === false && (
           <div className={divStyle}>
-            {hidelabel === true && (
+            {showLabel === true && (
               <label htmlFor={id} className={labelStyle}>
                 {label}
               </label>
@@ -32,7 +32,7 @@ const Input = React.forwardRef(
         )}
         {hideDiv === true && (
           <>
-            {hidelabel === true && (
+            {showLabel === true && (
               <label htmlFor={id} className={labelStyle}>
                 {label}
               </label>

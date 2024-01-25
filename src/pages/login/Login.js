@@ -1,22 +1,51 @@
-import { useState } from "react";
+import { Input, Button } from "../../components/index";
+import useHttp from "../../hooks/useHttp";
+import { useForm } from "react-hook-form";
+
+import { config } from "../../config";
+
+import { Loading } from "../../components/index";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+import { useDispatch } from "react-redux"
+import { AuthAction } from "../../store/admin/AuthSlice";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading, error, sendRequest } = useHttp();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const submitHandler = async (data) => {
+    const response = await sendRequest({
+      url: config.API_BASE_URL + "/admin/login",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        username: data.username,
+        password: data.password,
+      },
+    });
 
-    if(!email || !password){
-        return
+    if (!isLoading && error) {
+      toast.error(error, config.TOAST_UI);
     }
 
-    if(email === "admin@gmail.com" && password === "123456"){
-        localStorage.setItem('isAuth', true)
-    }else{
-        return
-    }   
+    if (!isLoading && !error && response) {
+      toast.success(response.message, config.TOAST_UI);
+      localStorage.setItem('AuthToken', response.data.UserToken)
+      dispatch(AuthAction.login(response.data))
+      navigate("/");
+    }
   };
+
   return (
     <main className="main d-flex w-100">
       <div className="container d-flex flex-column">
@@ -24,56 +53,56 @@ export default function Login() {
           <div className="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
             <div className="d-table-cell align-middle">
               <div className="text-center mt-4">
-                <h1 className="h2">Welcome back, Chris</h1>
+                <h1 className="h2">Welcome back</h1>
                 <p className="lead">Sign in to your account to continue</p>
               </div>
 
               <div className="card">
                 <div className="card-body">
                   <div className="m-sm-4">
-                    <div className="text-center">
-                      <img
-                        src="img\avatars\avatar.jpg"
-                        alt="Chris Wood"
-                        className="img-fluid rounded-circle"
-                        width="132"
-                        height="132"
+                    {isLoading && <Loading />}
+                    <form onSubmit={handleSubmit(submitHandler)}>
+                      <Input
+                        id="username"
+                        className={`form-control form-control-lg ${
+                          errors.username ? "is-invalid" : ""
+                        }`}
+                        type="text"
+                        name="username"
+                        placeholder="Enter your username"
+                        label="Username"
+                        showLabel={true}
+                        divStyle="form-group"
+                        {...register("username", {
+                          required: "Username is required",
+                        })}
+                        error={errors.username?.message}
                       />
-                    </div>
-                    <form onSubmit={submitHandler}>
-                      <div className="form-group">
-                        <label>Email</label>
-                        <input
-                          className="form-control form-control-lg"
-                          type="email"
-                          name="email"
-                          placeholder="Enter your email"
-                          onChange={(e) => setEmail(e.target.value)}
-                          value={email}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Password</label>
-                        <input
-                          className="form-control form-control-lg"
-                          type="password"
-                          name="password"
-                          placeholder="Enter your password"
-                          onChange={(e) => setPassword(e.target.value)}
-                          value={password}
-                        />
-                        <small>
-                          <a href="pages-reset-password.html">
-                            Forgot password?
-                          </a>
-                        </small>
-                      </div>
+
+                      <Input
+                        id="password"
+                        className={`form-control form-control-lg ${
+                          errors.password ? "is-invalid" : ""
+                        }`}
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        label="Password"
+                        showLabel={true}
+                        divStyle="form-group"
+                        {...register("password", {
+                          required: "Password is required",
+                        })}
+                        error={errors.password?.message}
+                      />
+
                       <div className="text-center mt-3">
-                        <input
+                        <Button
                           type="submit"
                           className="btn btn-lg btn-primary"
-                          value="Sign in"
-                        />
+                        >
+                          Sign in
+                        </Button>
                       </div>
                     </form>
                   </div>

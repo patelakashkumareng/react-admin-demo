@@ -13,6 +13,7 @@ import AdminListFilter from "./AdminListFilter";
 
 import { PER_PAGE } from "../../config/constant";
 import Modal from "../../components/UI/Modal";
+import { useNavigate } from "react-router-dom"
 
 const parseAdminStatusToApp = (status) => {
   return status ? "active" : "inactive";
@@ -90,6 +91,8 @@ const View = (props) => {
 
 const AdminList = (props) => {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate()
 
   const currentPage = useSelector((state) => state.admin.currentPage);
   const list = useSelector((state) => state.admin.list);
