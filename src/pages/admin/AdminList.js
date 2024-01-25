@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AdminListAction } from "../../store/admin/AdminSlice";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
 // import { isEmptyObject } from "./../../helpers/functions";
 import { config } from "../../config";
-import { Eye } from "react-feather";
+import { Eye, Edit2, Trash, XCircle, Check } from "react-feather";
 
 import useHttp from "../../hooks/useHttp";
 import AdminListFilter from "./AdminListFilter";
@@ -47,7 +47,6 @@ const View = (props) => {
     try {
       event.preventDefault();
 
-      console.log('View Handler Called')
       const id = props.id;
 
       const response = await sendRequest({
@@ -74,20 +73,16 @@ const View = (props) => {
         <Eye />
       </a>
       {data && show && !isLoading && (
-        <Modal
-          title="AdminDetail"
-          onClose={onCloseHandler}
-        >
+        <Modal title="AdminDetail" onClose={onCloseHandler}>
           <table>
             <tr>
               <th>Admin ID: </th>
               <td>{data.AdminID}</td>
             </tr>
-
           </table>
         </Modal>
       )}
-        {isLoading && <Loading />}
+      {isLoading && <Loading />}
       {viewError && <p>Error In View {viewError} </p>}
     </>
   );
@@ -163,7 +158,6 @@ const AdminList = (props) => {
           createdAt: data.DateCreated,
           isMasterAdmin: data.MasterAdmin,
           status: parseAdminStatusToApp(data.Status),
-          action: <View id={data.AdminID} />,
         };
       });
 
@@ -212,8 +206,42 @@ const AdminList = (props) => {
       format: (value) => (value ? "Yes" : "No"),
     },
     { accessor: "status", label: "Status" },
-    { accessor: "action", label: "Action" },
+    { accessor: "action", label: "Action", className: "text-center"},
   ];
+
+  const viewHandler = (e) => {
+    e.preventDefault();
+
+    console.log("Eye Icon Clicked");
+  };
+
+  const editClickHandler = (e) => {
+    e.preventDefault();
+  };
+
+  console.log("list", list);
+
+  const lists = list.map((item) => {
+    return {
+      ...item,
+      action: (
+        <>
+          <a className="btn disabled" href="/#" onClick={viewHandler}>
+            <Eye />
+          </a>
+          <a className="btn text-primary" href="/#" onClick={editClickHandler}>
+            <Edit2 />
+          </a>
+          <a className="btn text-primary" href="/#" onClick={editClickHandler}>
+            <Trash />
+          </a>
+          <a className="btn text-primary" href="/#" onClick={editClickHandler}>
+            {item["status"] === "active" ? <XCircle /> : <Check />}
+          </a>
+        </>
+      ),
+    };
+  });
 
   return (
     <ContentWrapper>
@@ -237,10 +265,11 @@ const AdminList = (props) => {
             {!isLoading && (
               <Table
                 columns={columns}
-                rows={list}
+                rows={lists}
                 perPageRecords={perPage}
                 currentPage={currentPage}
                 showSerialNumber="true"
+                showActions="false"
               />
             )}
             {isLoading && <Loading />}

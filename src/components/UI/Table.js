@@ -13,6 +13,9 @@ const Table = ({
     <tr>
       {showSerialNumber && <th>Sr No</th>}
       {columns.map((column) => {
+        if(column.className){
+          return <th className={column.className}  key={column.accessor}>{column.label}</th>;
+        }
         return <th key={column.accessor}>{column.label}</th>;
       })}
     </tr>
@@ -36,6 +39,9 @@ const Table = ({
                   {column.format(row[column.accessor])}
                 </td>
               );
+            }
+            if(column.className){
+              return <td className={column.className} key={column.accessor}>{row[column.accessor]}</td>;
             }
             return <td key={column.accessor}>{row[column.accessor]}</td>;
           })}
