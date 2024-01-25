@@ -1,6 +1,16 @@
 import { useState, useCallback} from 'react'
 import axios from 'axios';
 
+axios.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('AuthToken')
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token
+    }
+    return config
+  }
+)
+
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);

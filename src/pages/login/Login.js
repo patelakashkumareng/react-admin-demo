@@ -14,7 +14,7 @@ import { AuthAction } from "../../store/admin/AuthSlice";
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, error, sendRequest } = useHttp();
+  const { isLoading, error, response, sendRequest } = useHttp();
   const {
     register,
     handleSubmit,
@@ -22,7 +22,7 @@ export default function Login() {
   } = useForm();
 
   const submitHandler = async (data) => {
-    const response = await sendRequest({
+    await sendRequest({
       url: config.API_BASE_URL + "/admin/login",
       method: "POST",
       headers: {
@@ -33,18 +33,20 @@ export default function Login() {
         password: data.password,
       },
     });
-
-    if (!isLoading && error) {
-      toast.error(error, config.TOAST_UI);
-    }
-
-    if (!isLoading && !error && response) {
-      toast.success(response.message, config.TOAST_UI);
-      localStorage.setItem('AuthToken', response.data.UserToken)
-      dispatch(AuthAction.login(response.data))
-      navigate("/");
-    }
   };
+
+  if (!isLoading && error) {
+    toast.error(error, config.TOAST_UI);
+  }
+
+  if (!isLoading && !error && response) {
+    toast.success(response.message, config.TOAST_UI);
+    localStorage.setItem('AuthToken', response.data.UserToken)
+    dispatch(AuthAction.login(response.data))
+    setTimeout(() => {
+      navigate("/")
+    }, 1000)
+  }
 
   return (
     <main className="main d-flex w-100">

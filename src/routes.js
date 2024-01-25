@@ -4,12 +4,14 @@ import Login from './pages/login/Login'
 import AdminList from './pages/admin/AdminList'
 import CreateAdmin from './pages/admin/CreateAdmin'
 import Dashboard from './pages/dashboard/Dashboard'
+import PageNotFound from './pages/base/pageNotFound'
 
 const routes = createBrowserRouter([
     {path: '/', element: <Dashboard PageTitle="Dashboard" />},
     {path: '/login', element: <Login />},
     {path: '/admin/list', element: <AdminList />},
-    {path: '/admin/create', element: <CreateAdmin />}
+    {path: '/admin/create', element: <CreateAdmin />},
+    {path: '*', element: <PageNotFound />}
 ])
 
 export default routes

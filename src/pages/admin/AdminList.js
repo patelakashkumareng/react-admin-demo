@@ -222,8 +222,6 @@ const AdminList = (props) => {
     e.preventDefault();
   };
 
-  console.log("list", list);
-
   const lists = list.map((item) => {
     return {
       ...item,
