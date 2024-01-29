@@ -5,7 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
 import { config } from "../../config";
-import { Edit2, Trash, XCircle, Check } from "react-feather";
+import { Edit2 } from "react-feather";
 import { PER_PAGE } from "../../config/constant";
 
 import useHttp from "../../hooks/useHttp";
@@ -13,6 +13,8 @@ import useHttp from "../../hooks/useHttp";
 //*Admin Component
 import AdminListFilter from "./AdminListFilter";
 import ViewDetail from "./ViewDetail";
+import RemoveAdmin from "./RemoveAdmin";
+import AdminStatus from "./AdminStatus";
 
 const parseAdminStatusToApp = (status) => {
   return status ? "active" : "inactive";
@@ -158,6 +160,10 @@ const AdminList = (props) => {
     e.preventDefault();
   };
 
+  const onStatusChange  = () => {
+    fetch(queryParams)
+  }
+
   const lists = list.map((item) => {
     return {
       ...item,
@@ -167,16 +173,15 @@ const AdminList = (props) => {
           <a className="btn text-primary" href="/#" onClick={editClickHandler}>
             <Edit2 />
           </a>
-          <a className="btn text-primary" href="/#" onClick={editClickHandler}>
-            <Trash />
-          </a>
-          <a className="btn text-primary" href="/#" onClick={editClickHandler}>
-            {item["status"] === "active" ? <XCircle /> : <Check />}
-          </a>
+          <RemoveAdmin adminId={item.id} adminList={list}/>
+          <AdminStatus adminId={item.id} status={item.status} onStatusChange={onStatusChange} />
+
         </>
       ),
     };
   });
+
+
 
   return (
     <ContentWrapper>
