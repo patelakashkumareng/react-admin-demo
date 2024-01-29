@@ -18,12 +18,12 @@ const ModalOverlay = (props) => {
         <div className={modalVAlign + " " + modalSize}>
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">{props.title}</h5>
+              <h5 className="modal-title h3 font-weight-bolder">{props.title}</h5>
               <button type="button" className="close" onClick={props.onClose}>
                 <span>&times;</span>
               </button>
             </div>
-            <div className="modal-body m-3">
+            <div>
               {props.children}
             </div>
           </div>

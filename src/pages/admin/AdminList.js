@@ -1,19 +1,18 @@
-import React, { useEffect, useMemo, useCallback, useState } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AdminListAction } from "../../store/admin/AdminSlice";
 import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
-// import { isEmptyObject } from "./../../helpers/functions";
 import { config } from "../../config";
-import { Eye, Edit2, Trash, XCircle, Check } from "react-feather";
+import { Edit2, Trash, XCircle, Check } from "react-feather";
+import { PER_PAGE } from "../../config/constant";
 
 import useHttp from "../../hooks/useHttp";
-import AdminListFilter from "./AdminListFilter";
 
-import { PER_PAGE } from "../../config/constant";
-import Modal from "../../components/UI/Modal";
-import { useNavigate } from "react-router-dom"
+//*Admin Component
+import AdminListFilter from "./AdminListFilter";
+import ViewDetail from "./ViewDetail";
 
 const parseAdminStatusToApp = (status) => {
   return status ? "active" : "inactive";
@@ -34,65 +33,8 @@ const getQueryParams = (searchParams) => {
   return result;
 };
 
-const View = (props) => {
-  const { isLoading, error: viewError, sendRequest } = useHttp();
-
-  const [data, setData] = useState(null);
-  const [show, setShow] = useState(true);
-  const onCloseHandler = () => {
-    console.log("OnCloseHandler Called");
-    setShow(false);
-  };
-
-  const viewHandler = async (event) => {
-    try {
-      event.preventDefault();
-
-      const id = props.id;
-
-      const response = await sendRequest({
-        url: config.API_BASE_URL + `/admin/${id}/details`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response || response.status !== 200) {
-        return;
-      }
-      setShow(true);
-      setData(response.data);
-      console.log("admin Details: ", response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return (
-    <>
-      <a href="/#" onClick={viewHandler}>
-        <Eye />
-      </a>
-      {data && show && !isLoading && (
-        <Modal title="AdminDetail" onClose={onCloseHandler}>
-          <table>
-            <tr>
-              <th>Admin ID: </th>
-              <td>{data.AdminID}</td>
-            </tr>
-          </table>
-        </Modal>
-      )}
-      {isLoading && <Loading />}
-      {viewError && <p>Error In View {viewError} </p>}
-    </>
-  );
-};
-
 const AdminList = (props) => {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate()
 
   const currentPage = useSelector((state) => state.admin.currentPage);
   const list = useSelector((state) => state.admin.list);
@@ -209,14 +151,8 @@ const AdminList = (props) => {
       format: (value) => (value ? "Yes" : "No"),
     },
     { accessor: "status", label: "Status" },
-    { accessor: "action", label: "Action", className: "text-center"},
+    { accessor: "action", label: "Action", className: "text-center" },
   ];
-
-  const viewHandler = (e) => {
-    e.preventDefault();
-
-    console.log("Eye Icon Clicked");
-  };
 
   const editClickHandler = (e) => {
     e.preventDefault();
@@ -227,9 +163,7 @@ const AdminList = (props) => {
       ...item,
       action: (
         <>
-          <a className="btn disabled" href="/#" onClick={viewHandler}>
-            <Eye />
-          </a>
+          <ViewDetail adminId={item.id} />
           <a className="btn text-primary" href="/#" onClick={editClickHandler}>
             <Edit2 />
           </a>
