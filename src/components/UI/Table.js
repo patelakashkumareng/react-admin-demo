@@ -9,6 +9,9 @@ const Table = ({
   currentPage = 1,
   showSerialNumber = false,
 }) => {
+
+  console.log('Table Component Called');
+  console.log('column:: ', columns);
   const tableHeader = (
     <tr>
       {showSerialNumber && <th>Sr No</th>}
