@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Users, Sliders } from "react-feather";
+import { Users, Sliders, Image } from "react-feather";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(true);
@@ -72,6 +72,16 @@ const SideBar = () => {
                 </NavLink>
               </li>
             </ul>
+            <NavLink
+              to={`/banner/list`}
+              className="sidebar-link"
+            >
+              <i className="align-middle" data-feather="sliders"></i>{" "}
+              <span className="align-middle">
+                <Image />
+                Banners
+              </span>
+            </NavLink>
           </li>
         </ul>
       </div>
