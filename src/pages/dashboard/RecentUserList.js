@@ -21,7 +21,7 @@ const RecentUserList = (props) => {
   console.log("recent rows: ", rows);
 
   return (
-    <div className="flex-column" style={{"flexGrow": 1}}>
+    <div className="flex-column" style={{ flexGrow: 1}}>
       <div className="card-header">
         <h5 className="card-title">{props.title}</h5>
       </div>

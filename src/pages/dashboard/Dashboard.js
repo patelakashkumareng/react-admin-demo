@@ -36,7 +36,7 @@ const Dashboard = (props) => {
       {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
       {isLoading && <Loading />}
       {!isLoading && error && <p className="text-danger">{error}</p>}
-    <div className={"d-flex align-items-center flex-wrap "} >
+    <div className={"d-flex flex-wrap "} >
       {!isLoading && (
         <RecentUserList title={"Recent Users"} response={response} />
       )}

@@ -25,12 +25,12 @@ const RecentGameList = (props) => {
   console.log("recent rows: ", rows);
 
   return (
-    <div className="flex-column ml-5" style={{"flexGrow": 1}}>
+    <div className="flex-column ml-5">
       <div className="card-header">
         <h5 className="card-title">{props.title}</h5>
       </div>
       <div className="row">
-        <div className="col-12 col-xl-12" style={{"flexGrow": 1}}>
+        <div className="col-12 col-xl-12" style={{ flexGrow: 1}}>
           <div className="card">
             <Table
               columns={columns}

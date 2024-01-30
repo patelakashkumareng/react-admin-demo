@@ -5,14 +5,13 @@ import AdminList from './pages/admin/AdminList'
 import CreateAdmin from './pages/admin/CreateAdmin'
 import Dashboard from './pages/dashboard/Dashboard'
 import PageNotFound from './pages/base/pageNotFound'
-import BannerList from './pages/banner/BannerList'
-
+import Banner from './pages/banner/Banner'
 const routes = createBrowserRouter([
     {path: '/', element: <Dashboard PageTitle="Dashboard" />},
     {path: '/login', element: <Login />},
     {path: '/admin/list', element: <AdminList />},
     {path: '/admin/create', element: <CreateAdmin />},
-    {path: '/banner/list', element: <BannerList /> },
+    {path: '/banner/list', element: <Banner /> },
     {path: '*', element: <PageNotFound />}
 ])
 
