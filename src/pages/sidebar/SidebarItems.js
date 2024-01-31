@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-const SidebarItems = ({ expanded = false, itemLink = '/admin/list', title='Admin'}) => {
-  const [showActive, setShowActive] = useState(false)
+const SidebarItems = ({ itemLink = '/admin/list', title='Admin'}) => {
+        //assigning location variable
+        const location = useLocation();
 
-  const onClickHandler = (e) => {
-    e.preventDefault()
-    setShowActive(false)
-  }
+        //destructuring pathname from location
+        const { pathname } = location;
+
   return (
     <>
-      <li className={`slidebar-item ${showActive && "active"}`}>
-        <NavLink className="sidebar-link" to={itemLink} onClick={(e) => onClickHandler(e)}>
+      <li className={`slidebar-item ${pathname === itemLink && "active"}`}>
+        <NavLink className="sidebar-link" to={itemLink}>
           {title}
         </NavLink>
       </li>

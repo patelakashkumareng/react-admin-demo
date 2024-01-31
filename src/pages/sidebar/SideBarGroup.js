@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sliders, User } from "react-feather";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 const SideBarGroup = ({
   title = "Dashboard",
   icon = "Sliders",
@@ -8,21 +8,26 @@ const SideBarGroup = ({
   dataToggle= false,
   ...props
 }) => {
-  const [showActive, setShowActive] = useState(false);
+  // const [showActive, setShowActive] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+      //assigning location variable
+      const location = useLocation();
+
+      //destructuring pathname from location
+      const { pathname } = location;
 
   const onClickHandler = (e) => {
     e.preventDefault();
-    // setShowActive(true);
     setExpanded((prev) => !prev);
 };
-console.log('Show Active', showActive);
+console.log('pathname', pathname);
   return (
     <>
-      <li className={`sidebar-item ${expanded && "active"}`}>
-        <a
+      <li className={`sidebar-item ${pathname === navLink && "active"}`}>
+        <NavLink
           href={navLink}
-          className="sidebar-link"
+          className={`sidebar-link ${ !expanded && "collapsed"}`}
           onClick={(e) => onClickHandler(e)}
           aria-expanded={expanded ? true : false}
           data-toggle={dataToggle && "collapse"}
@@ -33,7 +38,7 @@ console.log('Show Active', showActive);
             {icon === "Users" && <User />}
             {title}
           </span>
-        </a>
+        </NavLink>
         <ul
           id="users"
           className={`sidebar-dropdown list-unstyled collapse ${
