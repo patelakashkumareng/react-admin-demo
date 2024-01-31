@@ -19,13 +19,15 @@ const useHttp = () => {
   const sendRequest = useCallback(async (config) => {
     setIsLoading(true);
     setError(null);
+
+    console.log('config :: ', config);
     try {
       const response = await axios.request({
         url: config.url,
         method: config.method ? config.method : 'GET',
-        params: config.params ? config.params : null,
+        params: config.params ? JSON.stringify(config.params) : {},
         headers: config.headers ? config.headers : {},
-        data: config.body ? JSON.stringify(config.body) : null
+        data: config.body ? JSON.stringify(config.body) : {}
       }
       );
 

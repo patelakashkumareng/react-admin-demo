@@ -173,7 +173,7 @@ const AdminList = (props) => {
           <a className="btn text-primary" href="/#" onClick={editClickHandler}>
             <Edit2 />
           </a>
-          <RemoveAdmin adminId={item.id} adminList={list}/>
+          <RemoveAdmin adminId={item.id} onDeleteHandler={ () => fetch(queryParams)}/>
           <AdminStatus adminId={item.id} status={item.status} onStatusChange={onStatusChange} />
 
         </>
