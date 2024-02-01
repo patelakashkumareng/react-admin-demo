@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sliders, User } from "react-feather";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const SideBarGroup = ({
   title = "Dashboard",
   icon = "Sliders",
@@ -10,21 +10,20 @@ const SideBarGroup = ({
 }) => {
   // const [showActive, setShowActive] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
-      //assigning location variable
-      const location = useLocation();
-
-      //destructuring pathname from location
-      const { pathname } = location;
+  const [currentValue, setCurrentValue] = useState('')
 
   const onClickHandler = (e) => {
     e.preventDefault();
+    setCurrentValue('')
+    setCurrentValue(props.value)
     setExpanded((prev) => !prev);
+
 };
-console.log('pathname', pathname);
+console.log('expanded', expanded);
+console.log('currentValue', currentValue);
   return (
     <>
-      <li className={`sidebar-item ${pathname === navLink && "active"}`}>
+      <li className={`sidebar-item ${ currentValue === props.value ? "active" : ''}`}>
         <NavLink
           href={navLink}
           className={`sidebar-link ${ !expanded && "collapsed"}`}

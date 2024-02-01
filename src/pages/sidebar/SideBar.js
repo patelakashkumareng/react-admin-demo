@@ -4,6 +4,8 @@ import SidebarItems from "./SidebarItems";
 
 const SideBar = () => {
 
+  
+
   return (
     <nav id="sidebar" className="sidebar">
       <div className="sidebar-content ">
@@ -14,8 +16,8 @@ const SideBar = () => {
 
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
-            <SideBarGroup title={'DashBoad'} icon={'Sliders'} navLink={"/"}/>
-            <SideBarGroup title={'Users'} icon={'Users'} navLink={"/#"} dataToggle={true}>
+            <SideBarGroup title={'DashBoad'} icon={'Sliders'} navLink={"/"} value={'dashboard'}/>
+            <SideBarGroup title={'Users'} icon={'Users'} navLink={"/#"} dataToggle={true} value={'users'} >
             <SidebarItems
             itemLink="/admin/list"
             title="Admin"
