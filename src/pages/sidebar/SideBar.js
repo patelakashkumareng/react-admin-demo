@@ -2,6 +2,8 @@ import React from "react";
 import SideBarGroup from "./SideBarGroup";
 import SidebarItems from "./SidebarItems";
 
+import { Sliders, User } from "react-feather";
+
 const SideBar = () => {
   return (
     <nav id="sidebar" className="sidebar">
@@ -13,17 +15,20 @@ const SideBar = () => {
 
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
-            <SideBarGroup title={'DashBoad'} icon={'Sliders'} navLink={"/"} value={'dashboard'} />
-            <SideBarGroup title={'Users'} icon={'Users'} navLink={"/#"} dataToggle={true} value={'users'}>
-            <SidebarItems
-            itemLink="/admin/list"
-            title="Admin"
-          />
           <SidebarItems
-            itemLink="/admin/create"
-            title="Create Admin"
+            itemLink="/"
+            title="DashBoard"
+            icon={<Sliders />}
           />
-            </SideBarGroup>
+          <SideBarGroup
+            title={"Users"}
+            icon={<User />}
+            navLink={"/#"}
+            value={"users"}
+          >
+            <SidebarItems itemLink="/admin/list" title="Admin" />
+            <SidebarItems itemLink="/admin/create" title="Create Admin" />
+          </SideBarGroup>
         </ul>
       </div>
     </nav>

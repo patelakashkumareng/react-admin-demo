@@ -41,8 +41,8 @@ export default function Login() {
 
   if (!isLoading && !error && response) {
     toast.success(response.message, config.TOAST_UI);
-    localStorage.setItem('AuthToken', response.data.UserToken)
     dispatch(AuthAction.login(response.data))
+    localStorage.setItem('AuthToken', response.data.UserToken)
     setTimeout(() => {
       navigate("/")
     }, 1000)

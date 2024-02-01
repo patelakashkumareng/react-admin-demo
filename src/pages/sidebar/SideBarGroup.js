@@ -1,14 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Sliders, User } from "react-feather";
 import { NavLink } from "react-router-dom";
 import { SideBarActions } from "../../store/admin/SideBarSlice";
 const SideBarGroup = (props) => {
   const {
     title = "Dashboard",
     icon = "Sliders",
-    navLink = "/",
-    dataToggle = false,
+    navLink = "/"
   } = props;
 
   const dispatch = useDispatch();
@@ -29,12 +27,11 @@ const SideBarGroup = (props) => {
           className={`sidebar-link ${!expanded && "collapsed"}`}
           onClick={(e) => onClickHandler(e, props.value)}
           aria-expanded={expanded ? true : false}
-          data-toggle={dataToggle && "collapse"}
+          data-toggle={"collapse"}
         >
           <i className="align-middle" data-feather="sliders"></i>{" "}
           <span className="align-middle">
-            {icon === "Sliders" && <Sliders />}
-            {icon === "Users" && <User />}
+            {icon}
             {title}
           </span>
         </NavLink>
