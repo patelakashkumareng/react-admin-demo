@@ -18,8 +18,6 @@ const RecentUserList = (props) => {
     createdAt: user.DateCreated,
   }));
 
-  console.log("recent rows: ", rows);
-
   return (
     <div className="flex-column" style={{ flexGrow: 1}}>
       <div className="card-header">

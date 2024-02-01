@@ -22,8 +22,6 @@ const RecentGameList = (props) => {
     ScheduleDate: game.ScheduleDate,
   }));
 
-  console.log("recent rows: ", rows);
-
   return (
     <div className="flex-column ml-5">
       <div className="card-header">

@@ -22,13 +22,9 @@ const Dashboard = (props) => {
     if (!response || response.status !== 200) {
       return;
     }
-
-    const apiData = response.data;
-    console.log("API data:: ", apiData);
   }, [sendRequest]);
 
   useEffect(() => {
-    console.log("USEEFFECT RUNNING....");
     fetch();
   }, [fetch]);
   return (

@@ -8,8 +8,6 @@ import { toast } from "react-toastify";
 const AdminStatus = (props) => {
   const { isLoading, error, sendRequest } = useHttp();
 
-  console.log("props: ", props);
-
   const changeStatusHandler = async (e) => {
     e.preventDefault();
     const adminId = props.adminId;

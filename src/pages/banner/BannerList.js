@@ -43,7 +43,6 @@ const BannerList = (props) => {
   );
 
   const fetchBanner = useCallback(async () => {
-    console.log("FETCH BENNR CALLED");
     const per_page = queryParams.per_page || PER_PAGE;
     const sports_id = queryParams.sports_id || CRICKET_SPORTS_ID;
     const keyword = queryParams.keyword;
@@ -57,8 +56,6 @@ const BannerList = (props) => {
       status,
       page,
     };
-
-    console.log("apiRequestParams: ", apiRequestParams);
 
     const response = await sendRequest({
       url: config.API_BASE_URL + "/banner/list",
@@ -126,8 +123,7 @@ const BannerList = (props) => {
     { accessor: "bannerUsedIn", label: "UsedIn" },
     // { accessor: "action", label: "Action", className: "text-center" },
   ];
-
-  console.log("page no: ", pageNo);
+  
   return (
     <>
       <p>BannerList</p>

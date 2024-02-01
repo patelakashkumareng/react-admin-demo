@@ -1,33 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Sliders, User } from "react-feather";
 import { NavLink } from "react-router-dom";
-const SideBarGroup = ({
-  title = "Dashboard",
-  icon = "Sliders",
-  navLink = "/",
-  dataToggle= false,
-  ...props
-}) => {
-  // const [showActive, setShowActive] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [currentValue, setCurrentValue] = useState('')
+import { SideBarActions } from "../../store/admin/SideBarSlice";
+const SideBarGroup = (props) => {
+  const {
+    title = "Dashboard",
+    icon = "Sliders",
+    navLink = "/",
+    dataToggle = false,
+  } = props;
 
-  const onClickHandler = (e) => {
+  const dispatch = useDispatch();
+  const activeMenu = useSelector((state) => state.sidebar.activeMenu);
+
+  let expanded = activeMenu === props.value ? true : false;
+
+  const onClickHandler = (e, value) => {
     e.preventDefault();
-    setCurrentValue('')
-    setCurrentValue(props.value)
-    setExpanded((prev) => !prev);
+    dispatch(SideBarActions.changeActiveMenu(value));
+  };
 
-};
-console.log('expanded', expanded);
-console.log('currentValue', currentValue);
   return (
     <>
-      <li className={`sidebar-item ${ currentValue === props.value ? "active" : ''}`}>
+      <li className={`sidebar-item ${expanded ? "active" : ""}`}>
         <NavLink
           href={navLink}
-          className={`sidebar-link ${ !expanded && "collapsed"}`}
-          onClick={(e) => onClickHandler(e)}
+          className={`sidebar-link ${!expanded && "collapsed"}`}
+          onClick={(e) => onClickHandler(e, props.value)}
           aria-expanded={expanded ? true : false}
           data-toggle={dataToggle && "collapse"}
         >
@@ -45,7 +45,7 @@ console.log('currentValue', currentValue);
           } `}
           data-parent="#sidebar"
         >
-            {props.children}
+          {props.children}
         </ul>
       </li>
     </>

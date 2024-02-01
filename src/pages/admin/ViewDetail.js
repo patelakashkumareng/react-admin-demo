@@ -34,8 +34,7 @@ const ViewDetail = (props) => {
 
       setShow(true);
     } catch (error) {
-      console.log("Error In Catch Block");
-      console.log(error);
+      //
     }
   };
   return (

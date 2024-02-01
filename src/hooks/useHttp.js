@@ -20,7 +20,6 @@ const useHttp = () => {
     setIsLoading(true);
     setError(null);
 
-    console.log('config :: ', config);
     try {
       const response = await axios.request({
         url: config.url,
