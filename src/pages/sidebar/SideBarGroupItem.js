@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-const SidebarItems = (props) => {
+const SideBarGroupItem = (props) => {
   const { itemLink = "/admin/list", title = "Admin", icon = "" } = props;
   const { pathname } = useLocation();
   const sideBarLinkClass =
@@ -11,7 +11,7 @@ const SidebarItems = (props) => {
   return (
     <>
       <li className={sideBarLinkClass}>
-        <NavLink className="sidebar-link" to={itemLink}>
+        <NavLink className="sidebar-link" to={itemLink} >
           <i className="align-middle" data-feather="sliders"></i> {icon && icon}
           {title}
         </NavLink>
@@ -20,4 +20,4 @@ const SidebarItems = (props) => {
   );
 };
 
-export default SidebarItems;
+export default SideBarGroupItem;

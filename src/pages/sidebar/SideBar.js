@@ -1,6 +1,7 @@
 import React from "react";
 import SideBarGroup from "./SideBarGroup";
-import SidebarItems from "./SidebarItems";
+import SideBarItem from "./SideBarItem";
+import SideBarGroupItem from "./SideBarGroupItem";
 
 import { Sliders, User } from "react-feather";
 
@@ -15,7 +16,7 @@ const SideBar = () => {
 
         <ul className="sidebar-nav">
           <li className="sidebar-header">Main</li>
-          <SidebarItems
+          <SideBarItem
             itemLink="/"
             title="DashBoard"
             icon={<Sliders />}
@@ -26,8 +27,8 @@ const SideBar = () => {
             navLink={"/#"}
             value={"users"}
           >
-            <SidebarItems itemLink="/admin/list" title="Admin" />
-            <SidebarItems itemLink="/admin/create" title="Create Admin" />
+            <SideBarGroupItem itemLink="/admin/list" title="Admin" />
+            <SideBarGroupItem itemLink="/admin/create" title="Create Admin" />
           </SideBarGroup>
         </ul>
       </div>
