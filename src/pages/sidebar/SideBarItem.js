@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { SideBarActions } from "../../store/admin/SideBarSlice";
+import { UIActions } from "../../store/admin/UISlice";
 
 const SideBarItem = (props) => {
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const SideBarItem = (props) => {
 
   const clickHandler = (e, value) => {
     e.preventDefault()
-    dispatch(SideBarActions.changeActiveMenu(""))
+    dispatch(UIActions.changeActiveSideMenu(""))
     navigate(value)
   }
 

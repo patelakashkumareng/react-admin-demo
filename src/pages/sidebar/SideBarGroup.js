@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { SideBarActions } from "../../store/admin/SideBarSlice";
+import { UIActions } from "../../store/admin/UISlice";
 const SideBarGroup = (props) => {
   const {
     title = "Dashboard",
@@ -10,13 +10,13 @@ const SideBarGroup = (props) => {
   } = props;
 
   const dispatch = useDispatch();
-  const activeMenu = useSelector((state) => state.sidebar.activeMenu);
+  const activeSideMenu = useSelector((state) => state.ui.activeSideMenu);
 
-  let expanded = activeMenu === props.value ? true : false;
+  let expanded = activeSideMenu === props.value ? true : false;
 
   const onClickHandler = (e, value) => {
     e.preventDefault();
-    dispatch(SideBarActions.changeActiveMenu(value));
+    dispatch(UIActions.changeActiveSideMenu(value));
   };
 
   return (

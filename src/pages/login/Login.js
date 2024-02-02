@@ -43,6 +43,7 @@ export default function Login() {
     toast.success(response.message, config.TOAST_UI);
     dispatch(AuthAction.login(response.data))
     localStorage.setItem('AuthToken', response.data.UserToken)
+    localStorage.setItem('UserData', JSON.stringify(response.data))
     setTimeout(() => {
       navigate("/")
     }, 1000)
