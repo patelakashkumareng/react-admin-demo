@@ -15,19 +15,14 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CreateBanner = (props) => {
-  const { title="Create Admin", description ="Form For Create Admin"} = props
+  const { title = "Create Admin", description = "Form For Create Admin" } =
+    props;
   const navigate = useNavigate();
-  const {
-    isLoading,
-    error,
-    response,
-    sendRequest: sendRequestForCreateAdmin,
-  } = useHttp();
-
+  const { isLoading, error, response, sendRequest: createAdminAPI } = useHttp();
 
   const createAdmin = useCallback(
     async (requestObject) => {
-      await sendRequestForCreateAdmin({
+      await createAdminAPI({
         url: config.API_BASE_URL + "/banner/create",
         method: "POST",
         headers: {
@@ -36,7 +31,7 @@ const CreateBanner = (props) => {
         body: requestObject,
       });
     },
-    [sendRequestForCreateAdmin]
+    [createAdminAPI]
   );
   const {
     register,
@@ -59,16 +54,23 @@ const CreateBanner = (props) => {
     await createAdmin(requestObject);
   };
 
-
   if (!isLoading && !error && response) {
     toast.success(response.message, config.TOAST_UI);
     navigate("/banner/list");
   }
+  const bannerUsedInOptions = [
+    { label: "Select Banner used in" },
+    {
+      value: 1,
+      label: "Web",
+    },
+    { value: 2, label: "App" },
+  ];
 
   return (
     <ContentWrapper>
       <div className="card">
-        {(isLoading) && <Loading />}
+        {isLoading && <Loading />}
         <div className="card-header">
           <h5 className="card-title">{title}</h5>
           <h6 className="card-subtitle text-muted">{description}</h6>
@@ -77,34 +79,40 @@ const CreateBanner = (props) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-row">
               <Input
-                id="firstname"
-                className={`form-control ${
-                  errors.firstname ? "is-invalid" : ""
-                }`}
+                id="name"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 type="text"
-                name="firstname"
-                placeholder="First Name"
-                label="Username"
+                name="name"
+                placeholder="Banner Name"
+                label="Banner Name"
                 divStyle="form-group col-md-6"
-                {...register("firstname", {
-                  required: "FirstName is required",
+                {...register("name", {
+                  required: "Banner Name is required",
                 })}
-                error={errors.firstname?.message}
+                error={errors.name?.message}
               />
               <Input
-                id="lastname"
+                id="type"
                 className={`form-control ${
                   errors.lastname ? "is-invalid" : ""
                 }`}
                 type="text"
-                name="lastname"
-                placeholder="Last Name"
-                label="Lastname"
+                name="type"
+                placeholder="Banner Type"
+                label="Banner Type"
                 divStyle="form-group col-md-6"
-                {...register("lastname", {
-                  required: "Last name is required",
+                {...register("type", {
+                  required: "Banner Type is required",
                 })}
                 error={errors.lastname?.message}
+              />
+              <Select
+                id="usedIn"
+                className="form-control"
+                label="usedIn"
+                divStyle="form-group col-md-6"
+                options={bannerUsedInOptions}
+                {...register("usedIn")}
               />
               <Input
                 id="username"
@@ -112,12 +120,12 @@ const CreateBanner = (props) => {
                   errors.username ? "is-invalid" : ""
                 }`}
                 type="text"
-                name="username"
-                placeholder="Username"
-                label="Username"
+                name="duration"
+                placeholder="Banner Duration:"
+                label="duration"
                 divStyle="form-group col-md-6"
-                {...register("username", {
-                  required: "Username is required",
+                {...register("duration", {
+                  required: "Banner is required",
                 })}
                 error={errors.username?.message}
               />
