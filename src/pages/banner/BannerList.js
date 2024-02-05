@@ -70,10 +70,10 @@ const BannerList = (props) => {
       return;
     }
 
-    const apiData = response.data;
+    const apiData = response?.data;
     const total_record = parseInt(response.total_record) || 0;
 
-    const data = apiData.map((data) => {
+    const data = apiData?.map((data) => {
       return {
         id: data.BannerID,
         type: data.Type,

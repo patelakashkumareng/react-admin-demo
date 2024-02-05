@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AdminListAction } from "../../store/admin/AdminSlice";
+import React, { useEffect, useMemo, useCallback, useReducer } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import ContentWrapper from "../../pages/base/ContentWrapper";
 import { Table, Pagination, Loading } from "../../components/index";
@@ -35,20 +33,42 @@ const getQueryParams = (searchParams) => {
   return result;
 };
 
-const AdminList = (props) => {
-  const dispatch = useDispatch();
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "list":
+      return { ...state, list: action.list };
+    case "current_page":
+      return { ...state, currentPage: action.currentPage };
+    case "per_page":
+      return { ...state, perPage: action.perPage };
+    case "total_record":
+      return { ...state, totalRecords: action.totalRecords };
+    default:
+      return new Error("Not Match any stats");
+  }
+};
 
-  const currentPage = useSelector((state) => state.admin.currentPage);
-  const list = useSelector((state) => state.admin.list);
-  const perPage = useSelector((state) => state.admin.perPage);
-  const totalRecords = useSelector((state) => state.admin.totalRecords);
+const initialState = {
+  list: [],
+  currentPage: 1,
+  perPage: 5,
+  totalRecords: 5,
+};
+
+const AdminList = (props) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const list = state.list;
+  const currentPage = state.currentPage;
+  const perPage = state.perPage;
+  const totalRecords = state.totalRecords;
 
   const { isLoading, error, sendRequest } = useHttp();
 
   let [searchParams, setSearchParams] = useSearchParams();
 
   const PageTitle = props.title;
-  const recordsInCurrentPage = list.length;
+  const recordsInCurrentPage = list.length || 0;
 
   const queryParams = useMemo(
     () => getQueryParams(searchParams),
@@ -60,7 +80,7 @@ const AdminList = (props) => {
       const per_page = queryParams.per_page || PER_PAGE;
       const keyword = queryParams.keyword;
       const status = parseAdminStatusToApi(queryParams.status);
-      const page = queryParams.page;
+      const page = queryParams.page || 1;
 
       const apiRequestParams = {
         filters: {},
@@ -93,7 +113,7 @@ const AdminList = (props) => {
       }
 
       const apiData = response.data;
-      const total_records = parseInt(response.total_records) || 0;
+      const totalRecords = parseInt(response.total_records) || 0;
 
       const data = apiData.map((data) => {
         return {
@@ -108,16 +128,24 @@ const AdminList = (props) => {
         };
       });
 
-      dispatch(
-        AdminListAction.fetchList({
-          list: data,
-          perPage: per_page,
-          currentPage: page,
-          totalRecords: total_records,
-        })
-      );
+      dispatch({
+        type: "list",
+        list: data,
+      });
+      dispatch({
+        type: "current_page",
+        currentPage: page,
+      });
+      dispatch({
+        type: "per_page",
+        perPage: per_page,
+      });
+      dispatch({
+        type: "total_record",
+        totalRecords: totalRecords,
+      });
     },
-    [sendRequest, dispatch]
+    [sendRequest]
   );
 
   useEffect(() => {
@@ -160,9 +188,9 @@ const AdminList = (props) => {
     e.preventDefault();
   };
 
-  const onStatusChange  = () => {
-    fetch(queryParams)
-  }
+  const onStatusChange = () => {
+    fetch(queryParams);
+  };
 
   const lists = list.map((item) => {
     return {
@@ -173,15 +201,19 @@ const AdminList = (props) => {
           <a className="btn text-primary" href="/#" onClick={editClickHandler}>
             <Edit2 />
           </a>
-          <RemoveAdmin adminId={item.id} onDeleteHandler={ () => fetch(queryParams)}/>
-          <AdminStatus adminId={item.id} status={item.status} onStatusChange={onStatusChange} />
-
+          <RemoveAdmin
+            adminId={item.id}
+            onDeleteHandler={() => fetch(queryParams)}
+          />
+          <AdminStatus
+            adminId={item.id}
+            status={item.status}
+            onStatusChange={onStatusChange}
+          />
         </>
       ),
     };
   });
-
-
 
   return (
     <ContentWrapper>
