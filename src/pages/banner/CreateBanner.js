@@ -14,9 +14,8 @@ import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CreateAdmin = (props) => {
+const CreateBanner = (props) => {
   const { title="Create Admin", description ="Form For Create Admin"} = props
-  const [roles, setRoles] = useState([]);
   const navigate = useNavigate();
   const {
     isLoading,
@@ -24,31 +23,12 @@ const CreateAdmin = (props) => {
     response,
     sendRequest: sendRequestForCreateAdmin,
   } = useHttp();
-  const {
-    isLoading: roleListisLoading,
-    error: rolesListError,
-    sendRequest: sendRequestForRoleList,
-  } = useHttp();
 
-  const fetchRoles = useCallback(async () => {
-    const response = await sendRequestForRoleList({
-      url: config.API_BASE_URL + "/admin/role/list",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {},
-    });
-
-    if (response && response.data) {
-      setRoles(response.data);
-    }
-  }, [sendRequestForRoleList]);
 
   const createAdmin = useCallback(
     async (requestObject) => {
       await sendRequestForCreateAdmin({
-        url: config.API_BASE_URL + "/admin/create",
+        url: config.API_BASE_URL + "/banner/create",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,11 +38,6 @@ const CreateAdmin = (props) => {
     },
     [sendRequestForCreateAdmin]
   );
-
-  useEffect(() => {
-    fetchRoles();
-  }, [fetchRoles]);
-
   const {
     register,
     handleSubmit,
@@ -84,27 +59,16 @@ const CreateAdmin = (props) => {
     await createAdmin(requestObject);
   };
 
-  const roleList = roles.map((role) => {
-    return {
-      value: role.RoleID,
-      label: role.RoleName,
-    };
-  });
-
-  if ((!roleListisLoading && rolesListError) || (!isLoading && error)) {
-    const errorMsg = error ? error : rolesListError;
-    toast.error(errorMsg, config.TOAST_UI);
-  }
 
   if (!isLoading && !error && response) {
     toast.success(response.message, config.TOAST_UI);
-    navigate("/admin/list");
+    navigate("/banner/list");
   }
 
   return (
     <ContentWrapper>
       <div className="card">
-        {(isLoading || roleListisLoading) && <Loading />}
+        {(isLoading) && <Loading />}
         <div className="card-header">
           <h5 className="card-title">{title}</h5>
           <h6 className="card-subtitle text-muted">{description}</h6>
@@ -205,14 +169,6 @@ const CreateAdmin = (props) => {
               />
             </div>
             <div className="form-row">
-              <Select
-                id="role"
-                className="form-control"
-                label="Role"
-                divStyle="form-group col-md-6"
-                options={roleList}
-                {...register("role")}
-              />
               <div className="form-group col-md-6">
                 <Radio
                   id="status1"
@@ -267,4 +223,4 @@ const CreateAdmin = (props) => {
   );
 };
 
-export default CreateAdmin;
+export default CreateBanner;

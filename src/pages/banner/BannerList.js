@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BannerListFilter from "./BannerListFilter";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import useHttp from "../../hooks/useHttp";
 import { PER_PAGE, CRICKET_SPORTS_ID } from "../../config/constant";
 import { config } from "../../config";
 import { Loading, Pagination, Table } from "../../components";
 
 const BannerList = (props) => {
+  const { description="Filters"} = props
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -123,10 +124,22 @@ const BannerList = (props) => {
     { accessor: "bannerUsedIn", label: "UsedIn" },
     // { accessor: "action", label: "Action", className: "text-center" },
   ];
-  
+
   return (
     <>
-      <p>BannerList</p>
+      {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
+      <div className="card-header">
+        <h5 className="card-title">
+          {description}
+          <Link to={"/banner/create"} className="btn btn-primary float-right">
+            Create {PageTitle}
+          </Link>
+        </h5>
+        <BannerListFilter
+          onApplyFilter={applyFilterHandler}
+          onClearFilter={clearFilterHandler}
+        />
+      </div>
       <div className="row">
         <div className="col-12 col-xl-12">
           <div className="card">

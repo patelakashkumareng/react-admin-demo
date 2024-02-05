@@ -5,7 +5,7 @@ import ContentWrapper from '../base/ContentWrapper'
 const Banner = () => {
   return (
         <ContentWrapper>
-        <BannerList title={"Banners"}/>
+        <BannerList title={"Banner"}/>
         </ContentWrapper>
   )
 }
