@@ -13,10 +13,10 @@ const Select = React.forwardRef(
     },
     ref
   ) => {
+    console.log('props error:: ', props.error);
     return (
       <div className={divStyle}>
         {showLabel === true && (
-          
           <label htmlFor={id} className={labelStyle}>
             {label}
           </label>
@@ -30,6 +30,11 @@ const Select = React.forwardRef(
           ))}
         </select>
 
+        {props.error && (
+          <label className="error jquery-validation-error small form-text invalid-feedback">
+            {props.error}
+          </label>
+        )}
       </div>
     );
   }

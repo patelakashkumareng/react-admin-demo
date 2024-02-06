@@ -7,11 +7,14 @@ import Button from "../../components/UI/Button";
 import { Loading } from "../../components";
 import { config } from "./../../config/index";
 import { useNavigate } from "react-router-dom";
-
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ConvertDateIntoUTC } from "./utility.banner";
+import {
+  ConvertDateIntoUTC,
+  bannerUsedInOptions,
+  bannerTypeOption,
+} from "./utility.banner";
 
 const CreateBanner = (props) => {
   const { title = "Create Admin", description = "Form For Create Admin" } =
@@ -49,11 +52,10 @@ const CreateBanner = (props) => {
       end_date: endDate,
       banner_used_in: +data.usedIn,
       image_data: formData,
-      image_name: data.image[0].name
+      image_name: data.image[0].name,
     };
 
-
-    console.log('req obj: ', requestObject);
+    console.log("req obj: ", requestObject);
 
     await createBanner(requestObject);
   };
@@ -62,22 +64,6 @@ const CreateBanner = (props) => {
     toast.success(response.message, config.TOAST_UI);
     navigate("/banner/list");
   }
-  const bannerUsedInOptions = [
-    { label: "Select Banner used in" , value: -1},
-    {
-      value: 0,
-      label: "Web",
-    },
-    { value: 1, label: "App" },
-  ];
-  const bannerTypeOption = [
-    { label: "Select Banner Type", value: -1 },
-    {
-      value: 0,
-      label: "LobbyBanner",
-    },
-    { value: 1, label: "AppBanner" },
-  ];
 
   return (
     <ContentWrapper>
@@ -159,7 +145,9 @@ const CreateBanner = (props) => {
             <div className="form-row">
               <Select
                 id="bannerType"
-                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.bannerType ? "is-invalid" : ""
+                }`}
                 showLabel={true}
                 label="Banner Type:"
                 divStyle="form-group col-md-6"
@@ -170,6 +158,7 @@ const CreateBanner = (props) => {
                       ["0", "1"].includes(v) || "please select banner type",
                   },
                 })}
+                error={errors.bannerType?.message}
               />
               <Input
                 id="image"

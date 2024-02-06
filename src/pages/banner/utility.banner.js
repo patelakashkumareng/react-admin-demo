@@ -45,3 +45,22 @@ export const parseBannerStatusToAPI = (status) => {
 export const ConvertDateIntoUTC = (date) => {
   return moment.utc(date).format("YYYY-MM-DD");
 };
+
+export const bannerUsedInOptions = [
+  { label: "Select Banner used in", value: -1 },
+  {
+    value: 0,
+    label: "Web",
+  },
+  { value: 1, label: "App" },
+];
+
+
+export   const bannerTypeOption = [
+  { label: "Select Banner Type", value: -1 },
+  {
+    value: 0,
+    label: "LobbyBanner",
+  },
+  { value: 1, label: "AppBanner" },
+]; 
