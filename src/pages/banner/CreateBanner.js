@@ -19,7 +19,7 @@ const CreateBanner = (props) => {
   const navigate = useNavigate();
   const { isLoading, error, response, sendRequest: createAdminAPI } = useHttp();
 
-  const createAdmin = useCallback(
+  const createBanner = useCallback(
     async (requestObject) => {
       await createAdminAPI({
         url: config.API_BASE_URL + "/banner/create",
@@ -37,14 +37,9 @@ const CreateBanner = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  console.log("errors: ", errors);
   const onSubmit = async (data) => {
-    console.log("data:: ", data);
     const formData = new FormData();
     formData.append("image", data.image[0], data.image[0].name);
-
-    console.log(" Instance form Data:: ", formData);
-
     const startDate = ConvertDateIntoUTC(data.startDate);
     const endDate = ConvertDateIntoUTC(data.endDate);
     const requestObject = {
@@ -52,10 +47,15 @@ const CreateBanner = (props) => {
       banner_type: +data.bannerType,
       start_date: startDate,
       end_date: endDate,
-      banner_used_in: data.usedIn,
+      banner_used_in: +data.usedIn,
+      image_data: formData,
+      image_name: data.image[0].name
     };
 
-    // await createAdmin(requestObject);
+
+    console.log('req obj: ', requestObject);
+
+    await createBanner(requestObject);
   };
 
   if (!isLoading && !error && response) {
@@ -63,7 +63,7 @@ const CreateBanner = (props) => {
     navigate("/banner/list");
   }
   const bannerUsedInOptions = [
-    { label: "Select Banner used in" },
+    { label: "Select Banner used in" , value: -1},
     {
       value: 0,
       label: "Web",
@@ -71,12 +71,12 @@ const CreateBanner = (props) => {
     { value: 1, label: "App" },
   ];
   const bannerTypeOption = [
-    { label: "Select Banner Type" },
+    { label: "Select Banner Type", value: -1 },
     {
-      value: 1,
+      value: 0,
       label: "LobbyBanner",
     },
-    { value: 2, label: "AppBanner" },
+    { value: 1, label: "AppBanner" },
   ];
 
   return (
