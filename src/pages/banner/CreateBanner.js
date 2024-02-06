@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ContentWrapper from "../base/ContentWrapper";
 import Input from "../../components/UI/Input";
 import Select from "../../components/UI/Select";
 import Button from "../../components/UI/Button";
-import Radio from "../../components/UI/Radio";
-import CheckBox from "../../components/UI/CheckBox";
 import { Loading } from "../../components";
 import { config } from "./../../config/index";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ConvertDateIntoUTC } from "./utility.banner";
 
 const CreateBanner = (props) => {
   const { title = "Create Admin", description = "Form For Create Admin" } =
@@ -38,20 +37,25 @@ const CreateBanner = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  console.log("errors: ", errors);
   const onSubmit = async (data) => {
+    console.log("data:: ", data);
+    const formData = new FormData();
+    formData.append("image", data.image[0], data.image[0].name);
+
+    console.log(" Instance form Data:: ", formData);
+
+    const startDate = ConvertDateIntoUTC(data.startDate);
+    const endDate = ConvertDateIntoUTC(data.endDate);
     const requestObject = {
-      username: data.username,
-      firstname: data.firstname,
-      lastname: data.lastname,
-      email: data.email,
-      mobile: data.mobile,
-      password: data.password,
-      status: data.status,
-      is_master_admin: data.isMasterAdmin ? 1 : 0,
-      role: data.role,
+      banner_name: data.name,
+      banner_type: +data.bannerType,
+      start_date: startDate,
+      end_date: endDate,
+      banner_used_in: data.usedIn,
     };
 
-    await createAdmin(requestObject);
+    // await createAdmin(requestObject);
   };
 
   if (!isLoading && !error && response) {
@@ -61,10 +65,18 @@ const CreateBanner = (props) => {
   const bannerUsedInOptions = [
     { label: "Select Banner used in" },
     {
-      value: 1,
+      value: 0,
       label: "Web",
     },
-    { value: 2, label: "App" },
+    { value: 1, label: "App" },
+  ];
+  const bannerTypeOption = [
+    { label: "Select Banner Type" },
+    {
+      value: 1,
+      label: "LobbyBanner",
+    },
+    { value: 2, label: "AppBanner" },
   ];
 
   return (
@@ -83,6 +95,7 @@ const CreateBanner = (props) => {
                 className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 type="text"
                 name="name"
+                showLabel={true}
                 placeholder="Banner Name"
                 label="Banner Name"
                 divStyle="form-group col-md-6"
@@ -91,139 +104,95 @@ const CreateBanner = (props) => {
                 })}
                 error={errors.name?.message}
               />
-              <Input
-                id="type"
-                className={`form-control ${
-                  errors.lastname ? "is-invalid" : ""
-                }`}
-                type="text"
-                name="type"
-                placeholder="Banner Type"
-                label="Banner Type"
-                divStyle="form-group col-md-6"
-                {...register("type", {
-                  required: "Banner Type is required",
-                })}
-                error={errors.lastname?.message}
-              />
               <Select
                 id="usedIn"
-                className="form-control"
-                label="usedIn"
+                className={`form-control ${errors.usedIn ? "is-invalid" : ""}`}
+                label="Banner Used In : "
+                showLabel={true}
                 divStyle="form-group col-md-6"
                 options={bannerUsedInOptions}
-                {...register("usedIn")}
-              />
-              <Input
-                id="username"
-                className={`form-control ${
-                  errors.username ? "is-invalid" : ""
-                }`}
-                type="text"
-                name="duration"
-                placeholder="Banner Duration:"
-                label="duration"
-                divStyle="form-group col-md-6"
-                {...register("duration", {
-                  required: "Banner is required",
-                })}
-                error={errors.username?.message}
-              />
-              <Input
-                id="password"
-                className={`form-control ${
-                  errors.password ? "is-invalid" : ""
-                }`}
-                type="password"
-                placeholder="Password"
-                label="Password"
-                divStyle="form-group col-md-6"
-                {...register("password", {
-                  required: "Password is required",
-                })}
-                error={errors.password?.message}
-              />
-            </div>
-            <div className="form-row">
-              <Input
-                id="email"
-                className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                type="text"
-                placeholder="Email"
-                label="Email"
-                divStyle="form-group col-md-6"
-                {...register("email", {
-                  required: "Email is required",
+                {...register("usedIn", {
+                  required: "Banner Name is required",
                   validate: {
-                    matchPatern: (value) =>
-                      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
-                        value
-                      ) || "Email address must be a valid address",
+                    isValidValue: (v) =>
+                      ["0", "1"].includes(v) || "please select banner used in",
                   },
                 })}
-                error={errors.email?.message}
+                error={errors.usedIn?.message}
+              />
+            </div>
+            <div className="">
+              <h5>Banner Duration: </h5>
+            </div>
+            <div className="form-row">
+              <Input
+                id="startDate"
+                className={`form-control ${
+                  errors.startDate ? "is-invalid" : ""
+                }`}
+                type="date"
+                placeholder="Start Date"
+                showLabel={true}
+                label="Start Date: "
+                divStyle="form-group col-md-6"
+                {...register("startDate", {
+                  required: "Start Date is required",
+                  valueAsDate: true,
+                })}
+                error={errors.startDate?.message}
               />
               <Input
-                id="mobile"
-                className={`form-control ${errors.mobile ? "is-invalid" : ""}`}
-                type="text"
-                placeholder="Mobile"
-                label="Mobile"
+                id="endDate"
+                className={`form-control ${errors.endDate ? "is-invalid" : ""}`}
+                type="date"
+                placeholder="End Date"
+                showLabel={true}
+                label="End Date: "
                 divStyle="form-group col-md-6"
-                {...register("mobile", {
-                  required: "Mobile number is required",
+                {...register("endDate", {
+                  required: "End Date is required",
+                  valueAsDate: true,
                 })}
-                error={errors.mobile?.message}
+                error={errors.endDate?.message}
               />
             </div>
             <div className="form-row">
-              <div className="form-group col-md-6">
-                <Radio
-                  id="status1"
-                  name="status"
-                  className={`form-check-input ${
-                    errors.status ? "is-invalid" : ""
-                  }`}
-                  type="radio"
-                  label="Active"
-                  labelStyle="form-check form-check-inline"
-                  value="1"
-                  {...register("status", {
-                    required: "field is required",
-                  })}
-                  error={errors.status?.message}
-                />
-
-                <Radio
-                  id="status0"
-                  name="status"
-                  className={`form-check-input ${
-                    errors.status ? "is-invalid" : ""
-                  }`}
-                  type="radio"
-                  label="In active"
-                  labelStyle="form-check form-check-inline"
-                  value="0"
-                  {...register("status", {
-                    required: "field is required",
-                  })}
-                  error={errors.status?.message}
-                />
-              </div>
+              <Select
+                id="bannerType"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                showLabel={true}
+                label="Banner Type:"
+                divStyle="form-group col-md-6"
+                options={bannerTypeOption}
+                {...register("bannerType", {
+                  validate: {
+                    isValidValue: (v) =>
+                      ["0", "1"].includes(v) || "please select banner type",
+                  },
+                })}
+              />
+              <Input
+                id="image"
+                type="file"
+                placeholder="Image"
+                className={`ml-2 ${
+                  errors.image ? "form-control is-invalid" : ""
+                }`}
+                showLabel={true}
+                labelStyle={"form-label w-100 ml-2"}
+                label="Banner Image:"
+                divStyle="form-group"
+                {...register("image", {
+                  required: "Please Select image",
+                })}
+                error={errors.image?.message}
+              />
             </div>
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <CheckBox
-                  className="custom-control-input"
-                  labelStyle="custom-control custom-checkbox m-0"
-                  text="Is Master Admin.?"
-                  {...register("isMasterAdmin")}
-                />
-              </div>
+            <div className="d-flex justify-content-center">
+              <Button type="submit" className="btn btn-primary w-40">
+                Save Banner
+              </Button>
             </div>
-            <Button type="submit" className="btn btn-primary">
-              Submit
-            </Button>
           </form>
         </div>
       </div>

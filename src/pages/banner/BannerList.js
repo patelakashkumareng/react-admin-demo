@@ -6,8 +6,16 @@ import { PER_PAGE, CRICKET_SPORTS_ID } from "../../config/constant";
 import { config } from "../../config";
 import { Loading, Pagination, Table } from "../../components";
 
+import {
+  parseBannerUsedIn,
+  parseBannerType,
+  parseBannerSportType,
+  parseBannerStatusToApp,
+  parseBannerStatusToAPI,
+} from "./utility.banner";
+
 const BannerList = (props) => {
-  const { description="Filters"} = props
+  const { description = "Filters" } = props;
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -18,21 +26,6 @@ const BannerList = (props) => {
     return result;
   };
 
-  const parseBannerStatusToApp = (status) => {
-    return status ? "active" : "inactive";
-  };
-
-  const parseBannerStatusToAPI = (status) => {
-    let apiStatus = null;
-
-    if (status === "active") {
-      apiStatus = true;
-    } else {
-      apiStatus = false;
-    }
-
-    return apiStatus;
-  };
   const { isLoading, error, sendRequest } = useHttp();
   let [searchParams, setSearchParams] = useSearchParams();
 
@@ -77,12 +70,12 @@ const BannerList = (props) => {
     const data = apiData?.map((data) => {
       return {
         id: data.BannerID,
-        type: data.Type,
-        sportType: data.SportType,
+        type: parseBannerType(data.Type),
+        sportType: parseBannerSportType(data.SportType),
         sportsId: data.SportsID,
         bannerName: data.Name,
         bannerImage: data.BannerImage,
-        bannerUsedIn: data.BannerUsedIn,
+        bannerUsedIn: parseBannerUsedIn(data.BannerUsedIn),
         status: parseBannerStatusToApp(data.Status),
       };
     });
@@ -122,7 +115,7 @@ const BannerList = (props) => {
     { accessor: "bannerName", label: "Name" },
     { accessor: "bannerImage", label: "Image" },
     { accessor: "bannerUsedIn", label: "UsedIn" },
-    // { accessor: "action", label: "Action", className: "text-center" },
+    { accessor: "action", label: "Action", className: "text-center" },
   ];
 
   return (
