@@ -1,9 +1,10 @@
 import { useState, useCallback} from 'react'
 import axios from 'axios';
+import { LOCAL_STORAGE } from "../config/constant"
 
 axios.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('AuthToken')
+    const token = localStorage.getItem(LOCAL_STORAGE.AUTH_TOKEN)
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + token
     }

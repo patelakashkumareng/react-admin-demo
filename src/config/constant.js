@@ -6,3 +6,8 @@ export const ADMIN_STATUS = {
     'inactive': 0,
     'all': null
 }
+
+export const LOCAL_STORAGE = {
+    USER_DATA: 'UserData',
+    AUTH_TOKEN: 'AuthToken'
+}

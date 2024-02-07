@@ -3,6 +3,7 @@ import useHttp from "../../hooks/useHttp";
 import { useForm } from "react-hook-form";
 
 import { config } from "../../config";
+import { LOCAL_STORAGE } from "../../config/constant"
 
 import { Loading } from "../../components/index";
 import { toast } from "react-toastify";
@@ -42,8 +43,8 @@ export default function Login() {
   if (!isLoading && !error && response) {
     toast.success(response.message, config.TOAST_UI);
     dispatch(AuthAction.login(response.data))
-    localStorage.setItem('AuthToken', response.data.UserToken)
-    localStorage.setItem('UserData', JSON.stringify(response.data))
+    localStorage.setItem(LOCAL_STORAGE.AUTH_TOKEN, response.data.UserToken)
+    localStorage.setItem(LOCAL_STORAGE.USER_DATA, JSON.stringify(response.data))
     setTimeout(() => {
       navigate("/")
     }, 1000)
