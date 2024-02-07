@@ -24,13 +24,15 @@ const CreateBanner = (props) => {
 
   const createBanner = useCallback(
     async (requestObject) => {
+      console.log("req obj just before api call: ", requestObject);
       await createAdminAPI({
-        url: config.API_BASE_URL + "/banner/create",
+        url: "http://localhost:1351/api/banner/create",
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
         body: requestObject,
+        contentType: "form-data",
       });
     },
     [createAdminAPI]
@@ -42,22 +44,19 @@ const CreateBanner = (props) => {
   } = useForm();
   const onSubmit = async (data) => {
     const formData = new FormData();
-    formData.append("image", data.image[0], data.image[0].name);
     const startDate = ConvertDateIntoUTC(data.startDate);
     const endDate = ConvertDateIntoUTC(data.endDate);
-    const requestObject = {
-      banner_name: data.name,
-      banner_type: +data.bannerType,
-      start_date: startDate,
-      end_date: endDate,
-      banner_used_in: +data.usedIn,
-      image_data: formData,
-      image_name: data.image[0].name,
-    };
 
-    console.log("req obj: ", requestObject);
+    formData.append("banner_name", data.name);
+    formData.append("banner_type", +data.bannerType);
+    formData.append("start_date", startDate);
+    formData.append("end_date", endDate);
+    formData.append("banner_used_in", +data.usedIn);
+    formData.append("image", data.image[0]);
 
-    await createBanner(requestObject);
+    console.log("req obj: ", formData);
+
+    await createBanner(formData);
   };
 
   if (!isLoading && !error && response) {

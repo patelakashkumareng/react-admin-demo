@@ -13,7 +13,7 @@ const routes = createBrowserRouter([
     {path: '/admin/list', element: <AdminList title={"Admin"} description={"Filters"}/>},
     {path: '/admin/create', element: <CreateAdmin title={"Create Admin"} description={"Form For Create Admin"} />},
     {path: '/banner/list', element: <Banner /> },
-    {path: '/banner/create', element: <CreateBanner /> },
+    {path: '/banner/create', element: <CreateBanner title={"Create Banner"} description={"Forn For Create Banner"} /> },
     {path: '*', element: <PageNotFound />}
 ])
 
