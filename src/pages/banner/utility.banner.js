@@ -1,4 +1,5 @@
 import moment from "moment";
+// import Constant from "../../config/constant"
 export const parseBannerUsedIn = (usedIn) => {
   if (usedIn === 0 || !usedIn) {
     return "Web";
@@ -55,12 +56,30 @@ export const bannerUsedInOptions = [
   { value: 1, label: "App" },
 ];
 
-
-export   const bannerTypeOption = [
+export const bannerTypeOption = [
   { label: "Select Banner Type", value: -1 },
   {
     value: 0,
     label: "LobbyBanner",
   },
   { value: 1, label: "AppBanner" },
-]; 
+];
+
+export const sportTypeOption = [
+  {label: "Select Sport Type", value: 0},
+  { label: "Normal", value: 1 },
+  { label: "Retro", value: 2 },
+];
+
+/**
+ * @array contain Screen ID
+ */
+// 1=Deposit, 2=KYC, 3=Match Detail, 4=Contest Detail
+
+export const screenIdOption = [
+  {label: "Please Select ScreenID", value: 0},
+  { label: "Deposite", value: 1 },
+  { label: "KYC", value: 2 },
+  { label: "Match Detail", value: 3 },
+  { label: "Contest Detail", value: 4 },
+];

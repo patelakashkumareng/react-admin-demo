@@ -6,3 +6,15 @@ export const ADMIN_STATUS = {
     'inactive': 0,
     'all': null
 }
+
+
+
+//  default exports = {
+//     BANNER: {
+//         USED_IN : {
+//             WEB: 0,
+//             APP: 1
+//         }
+//     }
+
+// }

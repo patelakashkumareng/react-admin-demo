@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import ContentWrapper from "../base/ContentWrapper";
 import Input from "../../components/UI/Input";
 import Select from "../../components/UI/Select";
 import Button from "../../components/UI/Button";
-import { Loading } from "../../components";
+import { Loading, Radio } from "../../components";
 import { config } from "./../../config/index";
 import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/useHttp";
@@ -14,17 +14,23 @@ import {
   ConvertDateIntoUTC,
   bannerUsedInOptions,
   bannerTypeOption,
+  sportTypeOption,
+  screenIdOption,
 } from "./utility.banner";
 
 const CreateBanner = (props) => {
-  const { title = "Create Admin", description = "Form For Create Admin" } =
+  const { title = "Create Banner", description = "Form For Create Banner" } =
     props;
   const navigate = useNavigate();
+  const [usedIn, setUsesdIn] = useState(null);
+  const [screenId, setScreenId] = useState(null)
+
+  console.log("usedIn:: ", usedIn);
+
   const { isLoading, error, response, sendRequest: createAdminAPI } = useHttp();
 
   const createBanner = useCallback(
     async (requestObject) => {
-      console.log("req obj just before api call: ", requestObject);
       await createAdminAPI({
         url: "http://localhost:1351/api/banner/create",
         method: "POST",
@@ -53,6 +59,8 @@ const CreateBanner = (props) => {
     formData.append("end_date", endDate);
     formData.append("banner_used_in", +data.usedIn);
     formData.append("image", data.image[0]);
+
+    +(data.usedIn) === 0 ? formData.append(data.url) : formData.append(data.screenId)
 
     console.log("req obj: ", formData);
 
@@ -98,6 +106,7 @@ const CreateBanner = (props) => {
                 options={bannerUsedInOptions}
                 {...register("usedIn", {
                   required: "Banner Name is required",
+                  onChange: (e) => setUsesdIn(parseInt(e.target.value)),
                   validate: {
                     isValidValue: (v) =>
                       ["0", "1"].includes(v) || "please select banner used in",
@@ -175,6 +184,101 @@ const CreateBanner = (props) => {
                 })}
                 error={errors.image?.message}
               />
+            </div>
+            <div className="form-row">
+              {usedIn === 0 && (
+                <Input
+                  id="url"
+                  className={`form-control ${errors.url ? "is-invalid" : ""}`}
+                  type="text"
+                  placeholder="URL"
+                  showLabel={true}
+                  label="Banner URL: "
+                  divStyle="form-group col-md-6"
+                  {...register("url", {
+                    required: "URL is Required",
+                  })}
+                  error={errors.url?.message}
+                />
+              )}
+              {usedIn === 1 && (
+                <>
+                <Select
+                  id="screenId"
+                  className={`form-control ${
+                    errors.screenId ? "is-invalid" : ""
+                  }`}
+                  showLabel={true}
+                  label="Screen ID:"
+                  divStyle="form-group col-md-6"
+                  options={screenIdOption}
+                  {...register("screenId", {
+                    onChange: (e) =>  setScreenId(parseInt(e.target.value)),
+                    validate: {
+                      isValidValue: (v) =>
+                        ["1","2","3","4"].includes(v) ||
+                        "please select screen id",
+                    },
+                  })}
+                  error={errors.screenId?.message}
+                />
+                {(screenId === 3 || screenId === 4 ) && <Select
+                id="sportType"
+                className={`form-control ${
+                  errors.sportType ? "is-invalid" : ""
+                }`}
+                showLabel={true}
+                label="Sport Type:"
+                divStyle="form-group col-md-6"
+                options={sportTypeOption}
+                {...register("sportType", {
+                  validate: {
+                    isValidValue: (v) =>
+                      ["1", "2"].includes(v) ||
+                      "please select sport type",
+                  },
+                })}
+                error={errors.sportType?.message}
+              />}
+              </>
+                
+              )}
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6 mt-2">
+                <div className="">Status:</div>
+                <Radio
+                  id="status1"
+                  name="status"
+                  className={`form-check-input ${
+                    errors.status ? "is-invalid" : ""
+                  }`}
+                  type="radio"
+                  label="Active"
+                  checked
+                  labelStyle="form-check form-check-inline"
+                  value="1"
+                  {...register("status", {
+                    required: "field is required",
+                  })}
+                  error={errors.status?.message}
+                />
+                <Radio
+                  id="status0"
+                  name="status"
+                  className={`form-check-input ${
+                    errors.status ? "is-invalid" : ""
+                  }`}
+                  type="radio"
+                  label="InActive"
+                  labelStyle="form-check form-check-inline"
+                  value="0"
+                  {...register("status", {
+                    required: "field is required",
+                  })}
+                  error={errors.status?.message}
+                />
+              </div>
             </div>
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-primary w-40">
