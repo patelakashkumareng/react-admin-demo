@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BannerListFilter from "./BannerListFilter";
 import { Link, useSearchParams } from "react-router-dom";
 import useHttp from "../../hooks/useHttp";
-import { PER_PAGE, CRICKET_SPORTS_ID } from "../../config/constant";
+import { PER_PAGE } from "../../config/constant";
 import { config } from "../../config";
 import { Loading, Pagination, Table } from "../../components";
 
@@ -38,7 +38,7 @@ const BannerList = (props) => {
 
   const fetchBanner = useCallback(async () => {
     const per_page = queryParams.per_page || PER_PAGE;
-    const sports_id = queryParams.sports_id || CRICKET_SPORTS_ID;
+    const sports_id = queryParams.sports_id || 0;
     const keyword = queryParams.keyword;
     const status = parseBannerStatusToAPI(queryParams.status);
     const page = queryParams.page;
