@@ -13,7 +13,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
 
-  let currentLanguage = i18n.language
+  let currentLanguage = i18n.language;
 
   const activeNavBarMenu = useSelector((state) => state.ui.activeNavBarMenu);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -60,9 +60,7 @@ const NavBar = () => {
         }`}
       >
         <a
-          className={`dropdown-item ${
-            currentLanguage === "en" && "active"
-          }`}
+          className={`dropdown-item ${currentLanguage === "en" && "active"}`}
           href="/#"
           onClick={(e) => {
             languageChangeHandler(e, "en");
@@ -77,9 +75,7 @@ const NavBar = () => {
           <span className="align-middle">English</span>
         </a>
         <a
-          className={`dropdown-item ${
-            currentLanguage === "hn" && "active"
-          }`}
+          className={`dropdown-item ${currentLanguage === "hn" && "active"}`}
           href="/#"
           onClick={(e) => {
             languageChangeHandler(e, "hn");
@@ -136,6 +132,9 @@ const NavBar = () => {
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-white">
+      <a className="sidebar-toggle d-flex mr-2" href="/#" onClick={(e) => { e.preventDefault(); dispatch(UIActions.changeToggleSideBar());}}>
+        <i className="hamburger align-self-center"></i>
+      </a>
       <div className="navbar-collapse collapse">
         <ul className="navbar-nav ml-auto">
           {LanguageMenu}

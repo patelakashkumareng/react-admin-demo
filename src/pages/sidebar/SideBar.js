@@ -5,11 +5,13 @@ import SideBarGroupItem from "./SideBarGroupItem";
 
 import { Sliders, User, Image } from "react-feather";
 import { useTranslation } from 'react-i18next'
+import { useSelector} from "react-redux"
 
 const SideBar = () => {
   const { t } = useTranslation();
+  const toggleSideBar =  useSelector((state) => state.ui.toggleSideBar);
   return (
-    <nav id="sidebar" className="sidebar">
+    <nav id="sidebar" className={`sidebar sidebar-sticky ${toggleSideBar && "toggled"}`}>
       <div className="sidebar-content ">
         <a className="sidebar-brand" href="?#">
           <i className="align-middle" data-feather="box"></i>

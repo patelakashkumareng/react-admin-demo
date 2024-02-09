@@ -15,6 +15,7 @@ const SideBarGroupItem = (props) => {
     const clickHandler = (e, value) => {
       e.preventDefault()
       dispatch(UIActions.changeActiveNavBarMenu(""))
+      dispatch(UIActions.changeToggleSideBar())
       navigate(value)
     }
 
