@@ -15,7 +15,6 @@ const SideBarItem = (props) => {
   const clickHandler = (e, value) => {
     e.preventDefault()
     dispatch(UIActions.changeActiveSideMenu(""))
-    dispatch(UIActions.changeToggleSideBar())
     navigate(value)
   }
 
