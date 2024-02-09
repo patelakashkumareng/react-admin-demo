@@ -38,7 +38,7 @@ const CreateBanner = (props) => {
   const createBanner = useCallback(
     async (requestObject) => {
       await createBannerAPI({
-        url: "http://localhost:1351/api/banner/create",
+        url:  `${config.API_BASE_URL}/banner/create`,
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
