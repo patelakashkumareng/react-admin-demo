@@ -14,7 +14,8 @@ import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CreateAdmin = () => {
+const CreateAdmin = (props) => {
+  const { title="Create Admin", description ="Form For Create Admin"} = props
   const [roles, setRoles] = useState([]);
   const navigate = useNavigate();
   const {
@@ -105,8 +106,8 @@ const CreateAdmin = () => {
       <div className="card">
         {(isLoading || roleListisLoading) && <Loading />}
         <div className="card-header">
-          <h5 className="card-title">Form row</h5>
-          <h6 className="card-subtitle text-muted">Bootstrap column layout.</h6>
+          <h5 className="card-title">{title}</h5>
+          <h6 className="card-subtitle text-muted">{description}</h6>
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -3,7 +3,7 @@ import SideBarGroup from "./SideBarGroup";
 import SideBarItem from "./SideBarItem";
 import SideBarGroupItem from "./SideBarGroupItem";
 
-import { Sliders, User } from "react-feather";
+import { Sliders, User, Image } from "react-feather";
 
 const SideBar = () => {
   return (
@@ -29,6 +29,15 @@ const SideBar = () => {
           >
             <SideBarGroupItem itemLink="/admin/list" title="Admin" />
             <SideBarGroupItem itemLink="/admin/create" title="Create Admin" />
+          </SideBarGroup>
+          <SideBarGroup
+            title={"Banners"}
+            icon={<Image />}
+            navLink={"/#"}
+            value={"banners"}
+          >
+            <SideBarGroupItem itemLink="/banner/list" title="Banners" />
+            <SideBarGroupItem itemLink="/banner/create" title="Create Banner" />
           </SideBarGroup>
         </ul>
       </div>

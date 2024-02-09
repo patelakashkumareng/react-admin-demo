@@ -56,6 +56,7 @@ const initialState = {
 };
 
 const AdminList = (props) => {
+  const { discription="Filters" } = props 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const list = state.list;
@@ -220,7 +221,7 @@ const AdminList = (props) => {
       {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
       <div className="card-header">
         <h5 className="card-title">
-          {PageTitle}
+          {discription}
           <Link to={"/admin/create"} className="btn btn-primary float-right">
             Create {PageTitle}
           </Link>
