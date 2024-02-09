@@ -13,7 +13,6 @@ const Select = React.forwardRef(
     },
     ref
   ) => {
-    console.log('props error:: ', props.error);
     return (
       <div className={divStyle}>
         {showLabel === true && (

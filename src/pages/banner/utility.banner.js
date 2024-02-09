@@ -1,4 +1,5 @@
 import moment from "moment";
+import Constant from "../../config/constant";
 // import Constant from "../../config/constant"
 export const parseBannerUsedIn = (usedIn) => {
   if (usedIn === 0 || !usedIn) {
@@ -46,40 +47,37 @@ export const parseBannerStatusToAPI = (status) => {
 export const ConvertDateIntoUTC = (date) => {
   return moment.utc(date).format("YYYY-MM-DD");
 };
-
 export const bannerUsedInOptions = [
   { label: "Select Banner used in", value: -1 },
   {
-    value: 0,
+    value: Constant.BANNER.USED_IN.WEB,
     label: "Web",
   },
-  { value: 1, label: "App" },
+  { value: Constant.BANNER.USED_IN.APP, label: "App" },
 ];
 
 export const bannerTypeOption = [
-  { label: "Select Banner Type", value: -1 },
+  { value: -1, label: "Select Banner Type" },
   {
-    value: 0,
+    value: Constant.BANNER.TYPE.LOBBY_BANNER,
     label: "LobbyBanner",
   },
-  { value: 1, label: "AppBanner" },
+  { value: Constant.BANNER.TYPE.APP_BANNER, label: "AppBanner" },
 ];
 
 export const sportTypeOption = [
-  {label: "Select Sport Type", value: 0},
-  { label: "Normal", value: 1 },
-  { label: "Retro", value: 2 },
+  { label: "Select Sport Type", value: -1 },
+  { label: "Normal", value: Constant.BANNER.SPORT_TYPE.NORMAL },
+  { label: "Retro", value: Constant.BANNER.SPORT_TYPE.RETRO },
 ];
 
 /**
  * @array contain Screen ID
  */
-// 1=Deposit, 2=KYC, 3=Match Detail, 4=Contest Detail
-
 export const screenIdOption = [
-  {label: "Please Select ScreenID", value: 0},
-  { label: "Deposite", value: 1 },
-  { label: "KYC", value: 2 },
-  { label: "Match Detail", value: 3 },
-  { label: "Contest Detail", value: 4 },
+  { label: "Please Select ScreenID", value: -1 },
+  { label: "Deposite", value: Constant.SCREEN_IDS.DEPOSITE },
+  { label: "KYC", value: Constant.SCREEN_IDS.KYC },
+  { label: "Match Detail", value: Constant.SCREEN_IDS.MATCH_DETAILS },
+  { label: "Contest Detail", value: Constant.SCREEN_IDS.CONTEST_DETAIL },
 ];

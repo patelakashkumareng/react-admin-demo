@@ -17,21 +17,27 @@ import {
   sportTypeOption,
   screenIdOption,
 } from "./utility.banner";
+import Constant from "../../config/constant";
 
 const CreateBanner = (props) => {
   const { title = "Create Banner", description = "Form For Create Banner" } =
     props;
   const navigate = useNavigate();
   const [usedIn, setUsesdIn] = useState(null);
-  const [screenId, setScreenId] = useState(null)
+  const [screenId, setScreenId] = useState(null);
 
   console.log("usedIn:: ", usedIn);
 
-  const { isLoading, error, response, sendRequest: createAdminAPI } = useHttp();
+  const {
+    isLoading,
+    error,
+    response,
+    sendRequest: createBannerAPI,
+  } = useHttp();
 
   const createBanner = useCallback(
     async (requestObject) => {
-      await createAdminAPI({
+      await createBannerAPI({
         url: "http://localhost:1351/api/banner/create",
         method: "POST",
         headers: {
@@ -41,7 +47,7 @@ const CreateBanner = (props) => {
         contentType: "form-data",
       });
     },
-    [createAdminAPI]
+    [createBannerAPI]
   );
   const {
     register,
@@ -53,16 +59,24 @@ const CreateBanner = (props) => {
     const startDate = ConvertDateIntoUTC(data.startDate);
     const endDate = ConvertDateIntoUTC(data.endDate);
 
+    console.log("req data: ", data);
+
     formData.append("banner_name", data.name);
     formData.append("banner_type", +data.bannerType);
     formData.append("start_date", startDate);
     formData.append("end_date", endDate);
     formData.append("banner_used_in", +data.usedIn);
     formData.append("image", data.image[0]);
+    formData.append("banner_status", data.status);
 
-    +(data.usedIn) === 0 ? formData.append(data.url) : formData.append(data.screenId)
+    +data.usedIn === Constant.BANNER.USED_IN.WEB
+      ? formData.append("banner_url", data.url)
+      : formData.append("screen_id", data.screenId);
 
-    console.log("req obj: ", formData);
+    +data.screenId === Constant.SCREEN_IDS.MATCH_DETAILS ||
+    +data.screenId === Constant.SCREEN_IDS.CONTEST_DETAIL
+      ? formData.append("sports_type", +data.sportType)
+      : formData.append("sports_type", Constant.BANNER.SPORT_TYPE.GENERAL);
 
     await createBanner(formData);
   };
@@ -70,6 +84,10 @@ const CreateBanner = (props) => {
   if (!isLoading && !error && response) {
     toast.success(response.message, config.TOAST_UI);
     navigate("/banner/list");
+  }
+
+  if (error) {
+    toast.error(response.message, config.TOAST_UI);
   }
 
   return (
@@ -201,47 +219,49 @@ const CreateBanner = (props) => {
                   error={errors.url?.message}
                 />
               )}
-              {usedIn === 1 && (
+              {usedIn === Constant.BANNER.USED_IN.APP && (
                 <>
-                <Select
-                  id="screenId"
-                  className={`form-control ${
-                    errors.screenId ? "is-invalid" : ""
-                  }`}
-                  showLabel={true}
-                  label="Screen ID:"
-                  divStyle="form-group col-md-6"
-                  options={screenIdOption}
-                  {...register("screenId", {
-                    onChange: (e) =>  setScreenId(parseInt(e.target.value)),
-                    validate: {
-                      isValidValue: (v) =>
-                        ["1","2","3","4"].includes(v) ||
-                        "please select screen id",
-                    },
-                  })}
-                  error={errors.screenId?.message}
-                />
-                {(screenId === 3 || screenId === 4 ) && <Select
-                id="sportType"
-                className={`form-control ${
-                  errors.sportType ? "is-invalid" : ""
-                }`}
-                showLabel={true}
-                label="Sport Type:"
-                divStyle="form-group col-md-6"
-                options={sportTypeOption}
-                {...register("sportType", {
-                  validate: {
-                    isValidValue: (v) =>
-                      ["1", "2"].includes(v) ||
-                      "please select sport type",
-                  },
-                })}
-                error={errors.sportType?.message}
-              />}
-              </>
-                
+                  <Select
+                    id="screenId"
+                    className={`form-control ${
+                      errors.screenId ? "is-invalid" : ""
+                    }`}
+                    showLabel={true}
+                    label="Screen ID:"
+                    divStyle="form-group col-md-6"
+                    options={screenIdOption}
+                    {...register("screenId", {
+                      onChange: (e) => setScreenId(parseInt(e.target.value)),
+                      validate: {
+                        isValidValue: (v) =>
+                          ["1", "2", "3", "4"].includes(v) ||
+                          "please select screen id",
+                      },
+                    })}
+                    error={errors.screenId?.message}
+                  />
+                  {(screenId === Constant.SCREEN_IDS.CONTEST_DETAIL ||
+                    screenId === Constant.SCREEN_IDS.MATCH_DETAILS) && (
+                    <Select
+                      id="sportType"
+                      className={`form-control ${
+                        errors.sportType ? "is-invalid" : ""
+                      }`}
+                      showLabel={true}
+                      label="Sport Type:"
+                      divStyle="form-group col-md-6"
+                      options={sportTypeOption}
+                      {...register("sportType", {
+                        validate: {
+                          isValidValue: (v) =>
+                            ["1", "2"].includes(v) ||
+                            "please select sport type",
+                        },
+                      })}
+                      error={errors.sportType?.message}
+                    />
+                  )}
+                </>
               )}
             </div>
             <div className="form-row">
