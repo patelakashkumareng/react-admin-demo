@@ -4,8 +4,10 @@ import SideBarItem from "./SideBarItem";
 import SideBarGroupItem from "./SideBarGroupItem";
 
 import { Sliders, User, Image } from "react-feather";
+import { useTranslation } from 'react-i18next'
 
 const SideBar = () => {
+  const { t } = useTranslation();
   return (
     <nav id="sidebar" className="sidebar">
       <div className="sidebar-content ">
@@ -18,17 +20,17 @@ const SideBar = () => {
           <li className="sidebar-header">Main</li>
           <SideBarItem
             itemLink="/"
-            title="DashBoard"
+            title={t('dasboard', {ns: 'glossary'})}
             icon={<Sliders />}
           />
           <SideBarGroup
-            title={"Users"}
+            title={t('users', {ns: 'glossary'})}
             icon={<User />}
             navLink={"/#"}
             value={"users"}
           >
-            <SideBarGroupItem itemLink="/admin/list" title="Admin" />
-            <SideBarGroupItem itemLink="/admin/create" title="Create Admin" />
+            <SideBarGroupItem itemLink="/admin/list" title={t('admin', {ns: 'glossary'})} />
+            <SideBarGroupItem itemLink="/admin/create" title={t('admin', {ns: 'glossary'}) + " " + t('create', {ns: 'glossary'})} />
           </SideBarGroup>
           <SideBarGroup
             title={"Banners"}

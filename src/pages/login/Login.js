@@ -7,13 +7,17 @@ import { LOCAL_STORAGE } from "../../config/constant"
 
 import { Loading } from "../../components/index";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useDispatch } from "react-redux"
 import { AuthAction } from "../../store/admin/AuthSlice";
 
+import { useTranslation } from 'react-i18next'
+
 export default function Login() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { state } = useLocation();
   const dispatch = useDispatch();
   const { isLoading, error, response, sendRequest } = useHttp();
   const {
@@ -46,8 +50,8 @@ export default function Login() {
     localStorage.setItem(LOCAL_STORAGE.AUTH_TOKEN, response.data.UserToken)
     localStorage.setItem(LOCAL_STORAGE.USER_DATA, JSON.stringify(response.data))
     setTimeout(() => {
-      navigate("/")
-    }, 1000)
+      navigate(state?.path || "/");
+    }, 0)
   }
 
   return (
@@ -57,7 +61,7 @@ export default function Login() {
           <div className="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
             <div className="d-table-cell align-middle">
               <div className="text-center mt-4">
-                <h1 className="h2">Welcome back, Twelfthman</h1>
+                <h1 className="h2">{t('welcome-back', {ns: 'glossary'})}, Twelfthman</h1>
                 <p className="lead">Sign in to your account to continue</p>
               </div>
 
@@ -108,7 +112,7 @@ export default function Login() {
                           type="submit"
                           className="btn btn-lg btn-primary"
                         >
-                          Sign in
+                          {t('signin', {ns: 'glossary'})}
                         </Button>
                       </div>
                     </form>
