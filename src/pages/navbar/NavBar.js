@@ -13,6 +13,8 @@ const NavBar = () => {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
 
+  let currentLanguage = i18n.language
+
   const activeNavBarMenu = useSelector((state) => state.ui.activeNavBarMenu);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const userData = useSelector((state) => state.auth.userData);
@@ -58,7 +60,9 @@ const NavBar = () => {
         }`}
       >
         <a
-          className="dropdown-item"
+          className={`dropdown-item ${
+            currentLanguage === "en" && "active"
+          }`}
           href="/#"
           onClick={(e) => {
             languageChangeHandler(e, "en");
@@ -73,7 +77,9 @@ const NavBar = () => {
           <span className="align-middle">English</span>
         </a>
         <a
-          className="dropdown-item"
+          className={`dropdown-item ${
+            currentLanguage === "hn" && "active"
+          }`}
           href="/#"
           onClick={(e) => {
             languageChangeHandler(e, "hn");

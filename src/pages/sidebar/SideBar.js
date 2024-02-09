@@ -17,7 +17,7 @@ const SideBar = () => {
         </a>
 
         <ul className="sidebar-nav">
-          <li className="sidebar-header">Main</li>
+          <li className="sidebar-header">{t('main', {ns: 'glossary'})}</li>
           <SideBarItem
             itemLink="/"
             title={t('dasboard', {ns: 'glossary'})}
