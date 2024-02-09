@@ -13,6 +13,7 @@ import {
   parseBannerStatusToApp,
   parseBannerStatusToAPI,
 } from "./utility.banner";
+import ViewDetail from "./ViewDetail";
 
 const BannerList = (props) => {
   const { description = "Filters" } = props;
@@ -74,7 +75,20 @@ const BannerList = (props) => {
         sportType: parseBannerSportType(data.SportType),
         sportsId: data.SportsID,
         bannerName: data.Name,
-        bannerImage: data.BannerImage,
+        bannerImage: data.BannerImage ? (
+          <div>
+            <a href={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`} target="__blank">
+            <img
+              src={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`}
+              alt={`${data?.BannerImage}`}
+              style={{maxWidth: "250px", maxHeight: "75px"}}
+            />
+            </a>
+          </div>
+          
+        ) : (
+          "-"
+        ),
         bannerUsedIn: parseBannerUsedIn(data.BannerUsedIn),
         status: parseBannerStatusToApp(data.Status),
       };
@@ -118,6 +132,18 @@ const BannerList = (props) => {
     { accessor: "action", label: "Action", className: "text-center" },
   ];
 
+
+  //Action Button code
+  
+  const row = data.map((item) => {
+    return {
+      ...item,
+      action: (
+        <ViewDetail id={item.id}/>
+      )
+    }
+  })
+
   return (
     <>
       {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
@@ -139,7 +165,7 @@ const BannerList = (props) => {
             {!isLoading && (
               <Table
                 columns={columns}
-                rows={data}
+                rows={row}
                 perPageRecords={perPage}
                 currentPage={pageNo}
                 showSerialNumber="true"
