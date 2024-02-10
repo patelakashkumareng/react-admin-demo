@@ -13,6 +13,7 @@ import AdminListFilter from "./AdminListFilter";
 import ViewDetail from "./ViewDetail";
 import RemoveAdmin from "./RemoveAdmin";
 import AdminStatus from "./AdminStatus";
+import { useTranslation } from "react-i18next";
 
 const parseAdminStatusToApp = (status) => {
   return status ? "active" : "inactive";
@@ -56,7 +57,8 @@ const initialState = {
 };
 
 const AdminList = (props) => {
-  const { discription="Filters" } = props 
+  const {t} = useTranslation()
+  const { description="filters" } = props 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const list = state.list;
@@ -68,7 +70,7 @@ const AdminList = (props) => {
 
   let [searchParams, setSearchParams] = useSearchParams();
 
-  const PageTitle = props.title;
+  const PageTitle = props.title || "admin"
   const recordsInCurrentPage = list.length || 0;
 
   const queryParams = useMemo(
@@ -218,12 +220,12 @@ const AdminList = (props) => {
 
   return (
     <ContentWrapper>
-      {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
+      {PageTitle && <h1 className="h3 mb-3">{t(`${PageTitle}`, {ns: 'glossary'})}</h1>}
       <div className="card-header">
         <h5 className="card-title">
-          {discription}
+          {description ? t(`${description}`, { ns:"glossary" }) : t("filters", { ns:"glossary" }) }
           <Link to={"/admin/create"} className="btn btn-primary float-right">
-            Create {PageTitle}
+            {t("admin", {ns: 'glossary'}) + " " + t("create", {ns: 'glossary'})}
           </Link>
         </h5>
         <AdminListFilter

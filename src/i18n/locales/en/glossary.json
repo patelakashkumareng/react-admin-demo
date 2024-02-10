@@ -1,4 +1,5 @@
 {
+  "twelfthman": "Twelfthman",
   "signin": "Sign In",
   "welcome-back": "Welcome back",
   "main": "Main",
@@ -7,5 +8,13 @@
   "games": "Games",
   "dasboard": "Dashboard",
   "users": "Users",
-  "admin": "Admin"
+  "admin": "Admin",
+  "banner": "Banner",
+  "filters": "Filters",
+  "search": "Search",
+  "clear": "Clear",
+  "keyword": "Keyword",
+  "all": "All",
+  "active": "Active",
+  "inactive": "InActive"
 }

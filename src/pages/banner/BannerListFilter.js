@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { Button, Input, Select } from '../../components'
+import { useTranslation } from 'react-i18next';
 const statusList = [
   { value: "all", label: "All" },
   { value: "active", label: "Active" },
@@ -7,6 +8,7 @@ const statusList = [
 ];
 
 const BannerListFilter = (props) => {
+  const { t } = useTranslation()
   const keywordRef = useRef()
   const statusRef = useRef()
 
@@ -51,9 +53,9 @@ const BannerListFilter = (props) => {
 
       <div className="form-group col-md-8">
         <Button type="submit" className="btn btn-primary mr-1">
-          Search
+          {t('search', {ns: 'glossary'})}
         </Button>
-        <Input type="button" className="btn btn-primary mr-1" value="Clear" hideDiv={true} onClick={clearSearchHandler}/>
+        <Input type="button" className="btn btn-primary mr-1" value={t('clear', {ns: 'glossary'})} hideDiv={true} onClick={clearSearchHandler}/>
       </div>
     </div>
   </form>

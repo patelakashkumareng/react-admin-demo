@@ -5,6 +5,7 @@ import useHttp from "../../hooks/useHttp";
 import { PER_PAGE } from "../../config/constant";
 import { config } from "../../config";
 import { Loading, Pagination, Table } from "../../components";
+import { useTranslation } from 'react-i18next'
 
 import {
   parseBannerUsedIn,
@@ -16,7 +17,8 @@ import {
 import ViewDetail from "./ViewDetail";
 
 const BannerList = (props) => {
-  const { description = "Filters" } = props;
+  const { t } = useTranslation()
+  const { description = t('filters', {ns: 'glossary'})} = props;
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -132,9 +134,7 @@ const BannerList = (props) => {
     { accessor: "action", label: "Action", className: "text-center" },
   ];
 
-
-  //Action Button code
-  
+  //Action Button code  
   const row = data.map((item) => {
     return {
       ...item,
@@ -146,12 +146,12 @@ const BannerList = (props) => {
 
   return (
     <>
-      {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
+      {PageTitle && <h1 className="h3 mb-3">{t(`${PageTitle}`, {ns: 'glossary'})}</h1>}
       <div className="card-header">
         <h5 className="card-title">
           {description}
           <Link to={"/banner/create"} className="btn btn-primary float-right">
-            Create {PageTitle}
+            {t(`${PageTitle}`, {ns: 'glossary'}) + " " + t('create', {ns: 'glossary'})} 
           </Link>
         </h5>
         <BannerListFilter

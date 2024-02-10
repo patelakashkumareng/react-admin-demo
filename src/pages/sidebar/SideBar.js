@@ -15,7 +15,7 @@ const SideBar = () => {
       <div className="sidebar-content ">
         <a className="sidebar-brand" href="?#">
           <i className="align-middle" data-feather="box"></i>
-          <span className="align-middle">AppStack</span>
+          <span className="align-middle">{t("twelfthman", { ns: "glossary"})}</span>
         </a>
 
         <ul className="sidebar-nav">
@@ -35,13 +35,13 @@ const SideBar = () => {
             <SideBarGroupItem itemLink="/admin/create" title={t('admin', {ns: 'glossary'}) + " " + t('create', {ns: 'glossary'})} />
           </SideBarGroup>
           <SideBarGroup
-            title={"Banners"}
+            title={t('banner', {ns: 'glossary'})}
             icon={<Image />}
             navLink={"/#"}
             value={"banners"}
           >
-            <SideBarGroupItem itemLink="/banner/list" title="Banners" />
-            <SideBarGroupItem itemLink="/banner/create" title="Create Banner" />
+            <SideBarGroupItem itemLink="/banner/list" title={t("banner", {ns: 'glossary'})} />
+            <SideBarGroupItem itemLink="/banner/create" title={t('banner', {ns: 'glossary'}) + " " + t('create', {ns: 'glossary'})} />
           </SideBarGroup>
         </ul>
       </div>

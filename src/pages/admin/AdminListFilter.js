@@ -2,16 +2,19 @@ import React, { useRef } from "react";
 import Input from "../../components/UI/Input";
 import Select from "../../components/UI/Select";
 import Button from "../../components/UI/Button";
+import { useTranslation } from "react-i18next";
 
-const statusList = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" }
-];
+
 
 const AdminListFilter = (props) => {
+  const {t}  = useTranslation()
   const keywordRef = useRef()
   const statusRef = useRef()
+  const statusList = [
+    { value: "all", label: t("all", {ns: "glossary"})},
+    { value: "active", label: t("active", {ns: "glossary"}) },
+    { value: "inactive", label:t("inactive", {ns: "glossary"}) }
+  ];
 
   const submitSearchHandler = (event) => {    
     event.preventDefault();
@@ -39,7 +42,7 @@ const AdminListFilter = (props) => {
         <Input
           type="text"
           className="form-control"
-          placeholder="Keyword"
+          placeholder={t("keyword", {ns:"glossary"})}
           divStyle="form-group col-md-2"
           ref={keywordRef}
         />
@@ -54,9 +57,9 @@ const AdminListFilter = (props) => {
 
         <div className="form-group col-md-8">
           <Button type="submit" className="btn btn-primary mr-1">
-            Search
+          {t('search', {ns: 'glossary'})}
           </Button>
-          <Input type="button" className="btn btn-primary mr-1" value="Clear" hideDiv={true} onClick={clearSearchHandler}/>
+          <Input type="button" className="btn btn-primary mr-1" value={t('clear', {ns: 'glossary'})} hideDiv={true} onClick={clearSearchHandler}/>
         </div>
       </div>
     </form>
