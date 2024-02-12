@@ -30,6 +30,7 @@ const Dashboard = (props) => {
     fetch();
   }, [fetch]);
   return (
+    <>
     <ContentWrapper>
       {PageTitle && <h1 className="h3 mb-3">{t('dashboard', { ns : "glossary"})}</h1>}
       {isLoading && <Loading />}
@@ -45,6 +46,7 @@ const Dashboard = (props) => {
 
       </div>
     </ContentWrapper>
+    </>
   );
 };
 
