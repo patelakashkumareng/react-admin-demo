@@ -29,5 +29,8 @@
   "last": "Last",
   "password": "Password",
   "email": "Email",
-  "mobile": "Mobile"
+  "mobile": "Mobile",
+  "web": "Web",
+  "app": "App",
+  "save": "Save"
 }

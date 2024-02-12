@@ -21,13 +21,15 @@ import Constant from "../../config/constant";
 import { useTranslation } from "react-i18next";
 
 const CreateBanner = (props) => {
-  const { title = "Create Banner", description = "Form For Create Banner" } =
+  const { t } = useTranslation()
+
+  const { title = t("create" , {ns: "glossary"}) , description = "Form For Create Banner" } =
     props;
   const navigate = useNavigate();
   const [usedIn, setUsesdIn] = useState(null);
   const [screenId, setScreenId] = useState(null);
 
-  const { t } = useTranslation()
+
 
   const {
     isLoading,
@@ -275,7 +277,7 @@ const CreateBanner = (props) => {
                     errors.status ? "is-invalid" : ""
                   }`}
                   type="radio"
-                  label="Active"
+                  label={t("active" , {ns: "glossary"})}
                   checked
                   labelStyle="form-check form-check-inline"
                   value="1"
@@ -291,7 +293,7 @@ const CreateBanner = (props) => {
                     errors.status ? "is-invalid" : ""
                   }`}
                   type="radio"
-                  label="InActive"
+                  label={t("inactive" , {ns: "glossary"})}
                   labelStyle="form-check form-check-inline"
                   value="0"
                   {...register("status", {
@@ -303,7 +305,7 @@ const CreateBanner = (props) => {
             </div>
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-primary w-40">
-                Save Banner
+                { t("save" , { ns: "glossary"})}
               </Button>
             </div>
           </form>

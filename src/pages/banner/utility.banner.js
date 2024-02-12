@@ -1,5 +1,6 @@
 import moment from "moment";
 import Constant from "../../config/constant";
+import i18n from 'i18next';
 // import Constant from "../../config/constant"
 export const parseBannerUsedIn = (usedIn) => {
   if (usedIn === 0 || !usedIn) {
@@ -51,9 +52,9 @@ export const bannerUsedInOptions = [
   { label: "Select Banner used in", value: -1 },
   {
     value: Constant.BANNER.USED_IN.WEB,
-    label: "Web",
+    label: i18n.t('web' , {ns: "glossary"}),
   },
-  { value: Constant.BANNER.USED_IN.APP, label: "App" },
+  { value: Constant.BANNER.USED_IN.APP,label: i18n.t("app" , {ns: "glossary"}) },
 ];
 
 export const bannerTypeOption = [
