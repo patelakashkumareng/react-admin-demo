@@ -1,3 +1,4 @@
 {
-    "logout-success": "Logout Successfully."
+    "logout-success": "Logout Successfully.",
+    "is-master-admin": "Is Master Admin?"
 }

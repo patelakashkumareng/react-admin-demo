@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
 const CreateAdmin = (props) => {
   const { title="Create Admin", description ="Form For Create Admin"} = props
   const [roles, setRoles] = useState([]);
   const navigate = useNavigate();
+  const {t} = useTranslation()
   const {
     isLoading,
     error,
@@ -119,7 +121,7 @@ const CreateAdmin = (props) => {
                 }`}
                 type="text"
                 name="firstname"
-                placeholder="First Name"
+                placeholder={t("first", {ns: "glossary"}) + " "+ t("name", {ns: "glossary"})}
                 label="Username"
                 divStyle="form-group col-md-6"
                 {...register("firstname", {
@@ -134,7 +136,7 @@ const CreateAdmin = (props) => {
                 }`}
                 type="text"
                 name="lastname"
-                placeholder="Last Name"
+                placeholder={t("last", {ns: "glossary"}) + " "+ t("name", {ns: "glossary"})}
                 label="Lastname"
                 divStyle="form-group col-md-6"
                 {...register("lastname", {
@@ -149,7 +151,7 @@ const CreateAdmin = (props) => {
                 }`}
                 type="text"
                 name="username"
-                placeholder="Username"
+                placeholder={t("user", {ns: "glossary"}) + " "+ t("name", {ns: "glossary"})}
                 label="Username"
                 divStyle="form-group col-md-6"
                 {...register("username", {
@@ -163,7 +165,7 @@ const CreateAdmin = (props) => {
                   errors.password ? "is-invalid" : ""
                 }`}
                 type="password"
-                placeholder="Password"
+                placeholder={t("password", {ns: "glossary"})}
                 label="Password"
                 divStyle="form-group col-md-6"
                 {...register("password", {
@@ -177,7 +179,7 @@ const CreateAdmin = (props) => {
                 id="email"
                 className={`form-control ${errors.email ? "is-invalid" : ""}`}
                 type="text"
-                placeholder="Email"
+                placeholder={t("email", {ns: "glossary"})}
                 label="Email"
                 divStyle="form-group col-md-6"
                 {...register("email", {
@@ -195,7 +197,7 @@ const CreateAdmin = (props) => {
                 id="mobile"
                 className={`form-control ${errors.mobile ? "is-invalid" : ""}`}
                 type="text"
-                placeholder="Mobile"
+                placeholder={t("mobile", {ns: "glossary"})}
                 label="Mobile"
                 divStyle="form-group col-md-6"
                 {...register("mobile", {
@@ -252,7 +254,7 @@ const CreateAdmin = (props) => {
                 <CheckBox
                   className="custom-control-input"
                   labelStyle="custom-control custom-checkbox m-0"
-                  text="Is Master Admin.?"
+                  text={t("is-master-admin")}
                   {...register("isMasterAdmin")}
                 />
               </div>

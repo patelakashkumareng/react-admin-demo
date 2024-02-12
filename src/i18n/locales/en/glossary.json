@@ -16,5 +16,18 @@
   "keyword": "Keyword",
   "all": "All",
   "active": "Active",
-  "inactive": "InActive"
+  "inactive": "InActive",
+  "image": "Image",
+  "name": "Name",
+  "date": "Date",
+  "type": "Type",
+  "start": "Start" ,
+  "end": "End",
+  "duration": "Duration",
+  "used": "Used",
+  "first": "First",
+  "last": "Last",
+  "password": "Password",
+  "email": "Email",
+  "mobile": "Mobile"
 }

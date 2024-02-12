@@ -18,6 +18,7 @@ import {
   screenIdOption,
 } from "./utility.banner";
 import Constant from "../../config/constant";
+import { useTranslation } from "react-i18next";
 
 const CreateBanner = (props) => {
   const { title = "Create Banner", description = "Form For Create Banner" } =
@@ -26,7 +27,7 @@ const CreateBanner = (props) => {
   const [usedIn, setUsesdIn] = useState(null);
   const [screenId, setScreenId] = useState(null);
 
-  console.log("usedIn:: ", usedIn);
+  const { t } = useTranslation()
 
   const {
     isLoading,
@@ -107,8 +108,8 @@ const CreateBanner = (props) => {
                 type="text"
                 name="name"
                 showLabel={true}
-                placeholder="Banner Name"
-                label="Banner Name"
+                placeholder={t("banner", { ns: "glossary"}) + " " + t("name", { ns: "glossary"})}
+                label={t("banner", { ns: "glossary"}) + " " + t("name", { ns: "glossary"}) + ":"}
                 divStyle="form-group col-md-6"
                 {...register("name", {
                   required: "Banner Name is required",
@@ -118,7 +119,7 @@ const CreateBanner = (props) => {
               <Select
                 id="usedIn"
                 className={`form-control ${errors.usedIn ? "is-invalid" : ""}`}
-                label="Banner Used In : "
+                label={t("banner", { ns: "glossary"}) + " " + t("used", { ns: "glossary"}) + ":"}
                 showLabel={true}
                 divStyle="form-group col-md-6"
                 options={bannerUsedInOptions}
@@ -134,7 +135,7 @@ const CreateBanner = (props) => {
               />
             </div>
             <div className="">
-              <h5>Banner Duration: </h5>
+              <h5>{t("banner", { ns: "glossary"}) + " " + t("duration", { ns: "glossary"}) + ":"} </h5>
             </div>
             <div className="form-row">
               <Input
@@ -143,9 +144,9 @@ const CreateBanner = (props) => {
                   errors.startDate ? "is-invalid" : ""
                 }`}
                 type="date"
-                placeholder="Start Date"
+                placeholder={t("start", { ns: "glossary"}) + " " + t("date", { ns: "glossary"})} 
                 showLabel={true}
-                label="Start Date: "
+                label={t("start", { ns: "glossary"}) + " " + t("date", { ns: "glossary"}) + ":"} 
                 divStyle="form-group col-md-6"
                 {...register("startDate", {
                   required: "Start Date is required",
@@ -157,9 +158,9 @@ const CreateBanner = (props) => {
                 id="endDate"
                 className={`form-control ${errors.endDate ? "is-invalid" : ""}`}
                 type="date"
-                placeholder="End Date"
+                placeholder={t("end", { ns: "glossary"}) + " " + t("date", { ns: "glossary"})}
                 showLabel={true}
-                label="End Date: "
+                label={t("end", { ns: "glossary"}) + " " + t("date", { ns: "glossary"}) + ":"} 
                 divStyle="form-group col-md-6"
                 {...register("endDate", {
                   required: "End Date is required",
@@ -175,7 +176,7 @@ const CreateBanner = (props) => {
                   errors.bannerType ? "is-invalid" : ""
                 }`}
                 showLabel={true}
-                label="Banner Type:"
+                label={t("banner", { ns: "glossary"}) + " " + t("type", { ns: "glossary"}) + ":"} 
                 divStyle="form-group col-md-6"
                 options={bannerTypeOption}
                 {...register("bannerType", {
@@ -195,7 +196,7 @@ const CreateBanner = (props) => {
                 }`}
                 showLabel={true}
                 labelStyle={"form-label w-100 ml-2"}
-                label="Banner Image:"
+                label={t("banner" , {ns: "glossary"}) + " " + t("image" , {ns: "glossary"})}
                 divStyle="form-group"
                 {...register("image", {
                   required: "Please Select image",
