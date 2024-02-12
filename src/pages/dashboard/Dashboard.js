@@ -5,9 +5,11 @@ import useHttp from "../../hooks/useHttp";
 import { config } from "../../config";
 import { Loading } from "../../components";
 import RecentGameList from "./RecentGameList";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = (props) => {
   const PageTitle = props.PageTitle;
+  const { t } = useTranslation()
 
   const { isLoading, error, sendRequest, response } = useHttp();
   const fetch = useCallback(async () => {
@@ -29,16 +31,16 @@ const Dashboard = (props) => {
   }, [fetch]);
   return (
     <ContentWrapper>
-      {PageTitle && <h1 className="h3 mb-3">{PageTitle}</h1>}
+      {PageTitle && <h1 className="h3 mb-3">{t('dashboard', { ns : "glossary"})}</h1>}
       {isLoading && <Loading />}
       {!isLoading && error && <p className="text-danger">{error}</p>}
     <div className={"d-flex flex-wrap "} >
       {!isLoading && (
-        <RecentUserList title={"Recent Users"} response={response} />
+        <RecentUserList title={t("recent" , { ns: "glossary"}) + " " +  t("users" , { ns: "glossary"}) } response={response} />
       )}
 
       {!isLoading && (
-        <RecentGameList title={"Recent Games"} response={response} />
+        <RecentGameList title={t("recent" , { ns: "glossary"}) + " " +  t("games" , { ns: "glossary"})} response={response} />
       )}
 
       </div>

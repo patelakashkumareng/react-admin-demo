@@ -22,7 +22,7 @@ const SideBar = () => {
           <li className="sidebar-header">{t('main', {ns: 'glossary'})}</li>
           <SideBarItem
             itemLink="/"
-            title={t('dasboard', {ns: 'glossary'})}
+            title={t('dashboard', {ns: 'glossary'})}
             icon={<Sliders />}
           />
           <SideBarGroup

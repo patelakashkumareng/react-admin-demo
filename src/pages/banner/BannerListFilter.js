@@ -1,16 +1,19 @@
 import React, { useRef } from 'react'
 import { Button, Input, Select } from '../../components'
 import { useTranslation } from 'react-i18next';
-const statusList = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" }
-];
+
 
 const BannerListFilter = (props) => {
   const { t } = useTranslation()
   const keywordRef = useRef()
   const statusRef = useRef()
+
+
+  const statusList = [
+    { value: "all", label: t("all", {ns: "glossary"})},
+    { value: "active", label: t("active", {ns: "glossary"}) },
+    { value: "inactive", label:t("inactive", {ns: "glossary"}) }
+  ];
 
   const submitSearchHandler = (event) => {    
     event.preventDefault();
@@ -38,7 +41,7 @@ const BannerListFilter = (props) => {
       <Input
         type="text"
         className="form-control"
-        placeholder="Keyword"
+        placeholder={t("keyword", {ns:"glossary"})}
         divStyle="form-group col-md-2"
         ref={keywordRef}
       />

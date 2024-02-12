@@ -15,10 +15,9 @@ const routes = createBrowserRouter([
   {
     element: <RequireAuth />,
     children: [
-      { path: "/", element: <Dashboard PageTitle="Dashboard" /> },
+      { path: "/", element: <Dashboard PageTitle="dashboard" /> },
       { path: "/admin/list", element: <AdminList /> },
       { path: "/admin/create", element: <CreateAdmin /> },
-      { path: "/banner/list", element: <Banner /> },
       { path: "/banner/list", element: <Banner /> },
       {
         path: "/banner/create",

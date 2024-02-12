@@ -3,23 +3,23 @@ import { Table } from "../../components";
 
 const RecentGameList = (props) => {
   const columns = [
-    { accessor: "GameID", label: "ID" },
-    { accessor: "GameName", label: "GameName" },
-    { accessor: "MinEntry", label: "MinEntry" },
-    { accessor: "MaxEntry", label: "MaxEntry" },
-    { accessor: "TotalEntry", label: "TotalEntry" },
-    { accessor: "ScheduleDate", label: "ScheduleDate" },
+    { accessor: "id", label: "ID" },
+    { accessor: "gameName", label: "GameName" },
+    { accessor: "minEntry", label: "MinEntry" },
+    { accessor: "maxEntry", label: "MaxEntry" },
+    { accessor: "totalEntry", label: "TotalEntry" },
+    { accessor: "scheduleDate", label: "ScheduleDate" },
   ];
 
   const recentGames = props.response?.data?.recent_games;
 
   const rows = recentGames?.map((game) => ({
-    GameID: game.GameID,
-    GameName: game.GameName,
-    MinEntry: game.MinEntry,
-    MaxEntry: game.MaxEntry,
-    TotalEntry: game.TotalEntry,
-    ScheduleDate: game.ScheduleDate,
+    id: game.GameID,
+    gameName: game.GameName,
+    minEntry: game.MinEntry,
+    maxEntry: game.MaxEntry,
+    totalEntry: game.TotalEntry,
+    scheduleDate: game.ScheduleDate,
   }));
 
   return (
