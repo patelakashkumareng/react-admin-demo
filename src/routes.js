@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import PageNotFound from "./pages/base/pageNotFound";
 import Banner from "./pages/banner/Banner";
 import CreateBanner from "./pages/banner/CreateBanner";
+import i18n from 'i18next';
 
 import RequireAuth from "./routes/RequireAuth";
 const routes = createBrowserRouter([
@@ -23,7 +24,7 @@ const routes = createBrowserRouter([
         path: "/banner/create",
         element: (
           <CreateBanner
-            title={"Create Banner"}
+            title={i18n.t("create-banner")}
             description={"Forn For Create Banner"}
           />
         ),

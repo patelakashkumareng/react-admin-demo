@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 const CreateBanner = (props) => {
   const { t } = useTranslation()
 
-  const { title = t("create" , {ns: "glossary"}) , description = "Form For Create Banner" } =
+  const { title = t("create-banner") , description = "Form For Create Banner" } =
     props;
   const navigate = useNavigate();
   const [usedIn, setUsesdIn] = useState(null);

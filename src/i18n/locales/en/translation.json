@@ -1,4 +1,5 @@
 {
     "logout-success": "Logout Successfully.",
-    "is-master-admin": "Is Master Admin?"
+    "is-master-admin": "Is Master Admin?",
+    "create-banner": "Create Banner"
 }
