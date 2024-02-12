@@ -5,7 +5,7 @@ import useHttp from "../../hooks/useHttp";
 import { PER_PAGE } from "../../config/constant";
 import { config } from "../../config";
 import { Loading, Pagination, Table } from "../../components";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 import {
   parseBannerUsedIn,
@@ -15,10 +15,13 @@ import {
   parseBannerStatusToAPI,
 } from "./utility.banner";
 import ViewDetail from "./ViewDetail";
+import { Edit2 } from "react-feather";
+import BannerStatus from "./BannerStatus";
+import RemoveBanner from "./RemoveBanner";
 
 const BannerList = (props) => {
-  const { t } = useTranslation()
-  const { description = t('filters', {ns: 'glossary'})} = props;
+  const { t } = useTranslation();
+  const { description = t("filters", { ns: "glossary" }) } = props;
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -79,15 +82,17 @@ const BannerList = (props) => {
         bannerName: data.Name,
         bannerImage: data.BannerImage ? (
           <div>
-            <a href={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`} target="__blank">
-            <img
-              src={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`}
-              alt={`${data?.BannerImage}`}
-              style={{maxWidth: "250px", maxHeight: "75px"}}
-            />
+            <a
+              href={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`}
+              target="__blank"
+            >
+              <img
+                src={`https://twelfthman-dev.s3.ap-south-1.amazonaws.com/upload/banner/${data?.BannerImage}`}
+                alt={`${data?.BannerImage}`}
+                style={{ maxWidth: "250px", maxHeight: "75px" }}
+              />
             </a>
           </div>
-          
         ) : (
           "-"
         ),
@@ -134,24 +139,50 @@ const BannerList = (props) => {
     { accessor: "action", label: "Action", className: "text-center" },
   ];
 
-  //Action Button code  
+  const onStatusChange = () => {
+    fetchBanner(queryParams);
+  };
+
+  //Action Button code
   const row = data.map((item) => {
     return {
       ...item,
       action: (
-        <ViewDetail id={item.id}/>
-      )
-    }
-  })
+        <>
+          <ViewDetail id={item.id} />
+          <a
+            className="btn text-primary"
+            href="/#"
+            onClick={(e) => console.log("clicked")}
+          >
+            <Edit2 />
+          </a>
+          <RemoveBanner
+            id={item.id}
+            onDeleteHandler={() => fetchBanner(queryParams)}
+          />
+          <BannerStatus
+            id={item.id}
+            status={item.status}
+            onStatusChange={onStatusChange}
+          />
+        </>
+      ),
+    };
+  });
 
   return (
     <>
-      {PageTitle && <h1 className="h3 mb-3">{t(`${PageTitle}`, {ns: 'glossary'})}</h1>}
+      {PageTitle && (
+        <h1 className="h3 mb-3">{t(`${PageTitle}`, { ns: "glossary" })}</h1>
+      )}
       <div className="card-header">
         <h5 className="card-title">
           {description}
           <Link to={"/banner/create"} className="btn btn-primary float-right">
-            {t(`${PageTitle}`, {ns: 'glossary'}) + " " + t('create', {ns: 'glossary'})} 
+            {t(`${PageTitle}`, { ns: "glossary" }) +
+              " " +
+              t("create", { ns: "glossary" })}
           </Link>
         </h5>
         <BannerListFilter
