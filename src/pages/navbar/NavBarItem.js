@@ -1,6 +1,6 @@
 const NavBarItem = (props) => {
     return (
-        <li className="nav-item dropdown">
+        <li className={'nav-item dropdown'} >
             {props.children}
           </li> 
     )

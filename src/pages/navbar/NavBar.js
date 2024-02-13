@@ -8,7 +8,10 @@ import { AuthAction } from "../../store/admin/AuthSlice";
 
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 const NavBar = () => {
+
+  const [expand , setExpand] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
@@ -21,6 +24,7 @@ const NavBar = () => {
 
   const clickHandler = (e, value) => {
     e.preventDefault();
+    setExpand((prev) => !prev)
     dispatch(UIActions.changeActiveNavBarMenu(value));
   };
 
@@ -99,7 +103,7 @@ const NavBar = () => {
         className="nav-link dropdown-toggle d-none d-sm-inline-block"
         href="/#"
         data-toggle="dropdown"
-        onClick={(e) => {
+        onMouseDown={(e) => {
           clickHandler(e, "profile");
         }}
       >
@@ -114,7 +118,7 @@ const NavBar = () => {
       </a>
       <div
         className={`dropdown-menu dropdown-menu-right ${
-          activeNavBarMenu === "profile" && "show"
+          (activeNavBarMenu === "profile" && expand) && "show"
         }`}
       >
         <a
@@ -126,13 +130,32 @@ const NavBar = () => {
         >
           Sign out
         </a>
+        <a
+          className="dropdown-item"
+          href="/#"
+          onClick={(e) => {
+            e.preventDefault()
+            navigate('/setting')
+          }}
+        >
+          AppSetting
+        </a>
       </div>
+
+
     </NavBarItem>
   );
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-white">
-      <a className="sidebar-toggle d-flex mr-2" href="/#" onClick={(e) => { e.preventDefault(); dispatch(UIActions.changeToggleSideBar());}}>
+      <a
+        className="sidebar-toggle d-flex mr-2"
+        href="/#"
+        onClick={(e) => {
+          e.preventDefault();
+          dispatch(UIActions.changeToggleSideBar());
+        }}
+      >
         <i className="hamburger align-self-center"></i>
       </a>
       <div className="navbar-collapse collapse">

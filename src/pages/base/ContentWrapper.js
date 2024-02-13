@@ -1,11 +1,9 @@
 import React from "react";
 import SideBar from "../sidebar/SideBar";
 import NavBar from "../navbar/NavBar";
-import SettingSider from "./SettingSider";
 
 const ContentWrapper = ({ children }) => {
   return (
-    <>
     <div className="wrapper">
       <SideBar />
       <div className="main">
@@ -16,8 +14,6 @@ const ContentWrapper = ({ children }) => {
         </main>
       </div>
     </div>
-    <SettingSider/>
-    </>
   );
 };
 

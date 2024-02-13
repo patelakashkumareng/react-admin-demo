@@ -10,6 +10,7 @@ import CreateBanner from "./pages/banner/CreateBanner";
 import i18n from 'i18next';
 
 import RequireAuth from "./routes/RequireAuth";
+import AppSetting from "./pages/appsetting/AppSetting";
 const routes = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "*", element: <PageNotFound /> },
@@ -29,6 +30,7 @@ const routes = createBrowserRouter([
           />
         ),
       },
+      { path: "/setting", element: <AppSetting /> }
     ],
   },
 ]);
