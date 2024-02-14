@@ -1,4 +1,5 @@
 import React from "react";
+import { FileText, Globe } from "react-feather";
 
 const ProfileDetaills = (props) => {
 
@@ -8,8 +9,8 @@ const ProfileDetaills = (props) => {
       <div className="col-md-4 col-xl-3">
         <div className="card mb-3 position-sticky sticky-top">
           <div className="card-header">
-            <div class="card-actions float-right">
-              <div class="dropdown show">
+            <div className="card-actions float-right">
+              <div className="dropdown show">
                 <a href="/#" data-toggle="dropdown" data-display="static">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -18,10 +19,10 @@ const ProfileDetaills = (props) => {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-more-horizontal align-middle"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-more-horizontal align-middle"
                   >
                     <circle cx="12" cy="12" r="1"></circle>
                     <circle cx="19" cy="12" r="1"></circle>
@@ -29,14 +30,14 @@ const ProfileDetaills = (props) => {
                   </svg>
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="/#">
+                <div className="dropdown-menu dropdown-menu-right">
+                  <a className="dropdown-item" href="/#">
                     Action
                   </a>
-                  <a class="dropdown-item" href="/#">
+                  <a className="dropdown-item" href="/#">
                     Another action
                   </a>
-                  <a class="dropdown-item" href="/#">
+                  <a className="dropdown-item" href="/#">
                     Something else here
                   </a>
                 </div>
@@ -93,11 +94,7 @@ const ProfileDetaills = (props) => {
                   data-feather="briefcase"
                   className="feather-sm mr-1"
                 ></span>{" "}
-                Works at <a href="/#">GitHub</a>
-              </li>
-              <li className="mb-1">
-                <span data-feather="map-pin" className="feather-sm mr-1"></span>{" "}
-                From <a href="/#">Boston</a>
+                Role <a href="/#">{adminData.role}</a>
               </li>
             </ul>
           </div>
@@ -106,24 +103,12 @@ const ProfileDetaills = (props) => {
             <h5 className="h6 card-title">Elsewhere</h5>
             <ul className="list-unstyled mb-0">
               <li className="mb-1">
-                <span className="fas fa-globe fa-fw mr-1"></span>{" "}
-                <a href="/#">staciehall.co</a>
+                <Globe className="mr-1" size={20} />
+                <a href="/https://web-dev.twelfthman.io/dashboard">web-dev.twelfthman.io</a>
               </li>
               <li className="mb-1">
-                <span className="fab fa-twitter fa-fw mr-1"></span>{" "}
-                <a href="/#">Twitter</a>
-              </li>
-              <li className="mb-1">
-                <span className="fab fa-facebook fa-fw mr-1"></span>{" "}
-                <a href="/#">Facebook</a>
-              </li>
-              <li className="mb-1">
-                <span className="fab fa-instagram fa-fw mr-1"></span>{" "}
-                <a href="/#">Instagram</a>
-              </li>
-              <li className="mb-1">
-                <span className="fab fa-linkedin fa-fw mr-1"></span>{" "}
-                <a href="/#">LinkedIn</a>
+                <FileText className="mr-1" size={20}/>{" "}
+                <a href="http://data-feed-dev.twelfthman.io/">data-feed-dev.twelfthman.io </a>
               </li>
             </ul>
           </div>

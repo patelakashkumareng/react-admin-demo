@@ -78,7 +78,7 @@ const ViewDetail = (props) => {
           <ViewTable
             headColumn={["Properties", "value"]}
             rows={res}
-            isShowTabularUI={false}
+            isShowTabularUI={true}      
           />
         </Modal>
       )}

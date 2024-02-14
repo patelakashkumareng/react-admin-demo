@@ -1,17 +1,24 @@
 import React from "react";
 
 const ViewTable = (props) => {
-
-  const { headColumn= ["Properties", "Value"], rows, isShowTabularUI = true, divStyle = ""} = props
+  const {
+    headColumn = ["Properties", "Value"],
+    rows,
+    isShowTabularUI = true,
+    divStyle = "",
+  } = props;
 
   const totalRecord = Object.keys(rows).length;
 
-  return (totalRecord > 10 || !isShowTabularUI) ? (
+  return totalRecord > 10 || !isShowTabularUI ? (
     <div className="card-body">
       <div className="form-row border  border-dark p-2 ">
         {Object.keys(rows).map((prop, index) => {
           return (
-            <div className={`form-group col-md-6  border bg-dark text-white ${divStyle}`} key={index} >
+            <div
+              className={`form-group col-md-6  border bg-dark text-white ${divStyle}`}
+              key={index}
+            >
               <div className={"d-flex flex-wrap"}>
                 <label className="ml-2 font-weight-bolder">{prop}:</label>{" "}
                 <label className="ml-2 font-weight-light">{rows[prop]}</label>
@@ -26,18 +33,17 @@ const ViewTable = (props) => {
       <div className="card">
         <table className="table table-bordered">
           <thead>
-         
-              {headColumn.map((col, index) => (
-                   <tr key={index}>
+            <tr>
+            {headColumn.map((col, index) => (   
                 <th
                   className={"font-weight-bolder h4"}
                   style={{ width: "40%" }}
+                  key={index}
                 >
                   {col}
-                </th>
-                </tr>
-              ))}
-      
+                </th>     
+            ))}
+            </tr>
           </thead>
           <tbody>
             {Object.keys(rows).map((prop, index) => {
