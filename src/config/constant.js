@@ -13,6 +13,33 @@ export const LOCAL_STORAGE = {
 }
 
 
+
+export const SPORTS = {
+    CRICKET :{
+        NAME: 'cricket',
+        ID: 1
+    }, 
+    FOOTBALL: {
+        NAME: 'football',
+        ID: 2
+    },
+    BASKETBALL: {
+        NAME: 'basketball',
+        ID: 3
+    }
+}
+export const SPORTSLIST = [
+   {
+    value: 1,
+    label: 'Cricket'
+   },
+   {
+    value: 2,
+    label: 'Football'
+   },
+]
+
+
 const Constant = Object.freeze({
 
     SCREEN_IDS : {

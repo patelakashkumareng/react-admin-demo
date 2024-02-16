@@ -32,5 +32,8 @@
   "mobile": "Mobile",
   "web": "Web",
   "app": "App",
-  "save": "Save"
+  "save": "Save",
+  "cricket": "Cricket",
+  "football": "Football",
+  "basketball": "Basketball"
 }

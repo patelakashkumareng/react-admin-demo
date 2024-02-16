@@ -1,20 +1,36 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { config } from "../../config/config";
-import { LOCAL_STORAGE } from "../../config/constant";
+import { LOCAL_STORAGE, SPORTS } from "../../config/constant";
 import NavBarItem from "./NavBarItem";
 import { UIActions } from "../../store/admin/UISlice";
 import { AuthAction } from "../../store/admin/AuthSlice";
+import { currentSport } from "../../store/admin/SportsSlice";
 
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBaseballBatBall,
+  faBasketball,
+  faFutbol,
+} from "@fortawesome/free-solid-svg-icons";
 const NavBar = () => {
+  const [expand, setExpand] = useState(false);
+  const [sportListExpand, setSportListExpand] = useState(false);
 
-  const [expand , setExpand] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
+
+  const { sportId, name: sportsName } = useSelector((state) => state.sport);
+
+  const onSportChange = (e) => {
+    e.preventDefault();
+    dispatch(currentSport({ sportId: e.target.value, name: e.target.name }));
+    setSportListExpand((prev) => !prev);
+  };
 
   let currentLanguage = i18n.language;
 
@@ -24,7 +40,7 @@ const NavBar = () => {
 
   const clickHandler = (e, value) => {
     e.preventDefault();
-    setExpand((prev) => !prev)
+    setExpand((prev) => !prev);
     dispatch(UIActions.changeActiveNavBarMenu(value));
   };
 
@@ -44,6 +60,69 @@ const NavBar = () => {
     dispatch(UIActions.changeActiveNavBarMenu(""));
     i18n.changeLanguage(value);
   };
+
+  const SportSelection = (
+    <NavBarItem>
+      <a
+        className="nav-link dropdown-toggle d-none d-sm-inline-block"
+        href="/#"
+        data-toggle="dropdown"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setSportListExpand((prev) => !prev);
+        }}
+      >
+        <span className="mr-1">
+          {+sportId === SPORTS.CRICKET.ID && (
+            <FontAwesomeIcon icon={faBaseballBatBall} />
+          )}
+          {+sportId === SPORTS.FOOTBALL.ID && (
+            <FontAwesomeIcon icon={faFutbol} />
+          )}
+          {+sportId === SPORTS.BASKETBALL.NAME && (
+            <FontAwesomeIcon icon={faBaseballBatBall} />
+          )}{" "}
+        </span>
+        <span className="text-dark pr-2">{t(sportsName, {ns: "glossary"})}</span>
+      </a>
+      <div
+        className={`dropdown-menu dropdown-menu-right ${
+          sportListExpand && "show"
+        }`}
+      >
+        <button
+          className={`btn btn-link dropdown-item  ${
+            +sportId === SPORTS.CRICKET.ID && "active"
+          }`}
+          onClick={onSportChange}
+          value={SPORTS.CRICKET.ID}
+          name={SPORTS.CRICKET.NAME}
+        >
+          <FontAwesomeIcon icon={faBaseballBatBall} /> {t(SPORTS.CRICKET.NAME, {ns: "glossary"})}
+        </button>
+        <button
+          className={`btn btn-link dropdown-item ${
+            +sportId === SPORTS.FOOTBALL.ID && "active"
+          }`}
+          onClick={onSportChange}
+          value={SPORTS.FOOTBALL.ID}
+          name={SPORTS.FOOTBALL.NAME}
+        >
+          <FontAwesomeIcon icon={faFutbol} /> {t(SPORTS.FOOTBALL.NAME, { ns: "glossary"})}
+        </button>
+        <button
+          className={`btn btn-link dropdown-item ${
+            +sportId === SPORTS.BASKETBALL.ID && "active"
+          }`}
+          onClick={onSportChange}
+          value={SPORTS.BASKETBALL.ID}
+          name={SPORTS.BASKETBALL.NAME}
+        >
+          <FontAwesomeIcon icon={faBasketball} /> {t(SPORTS.BASKETBALL.NAME, { ns: "glossary"})}
+        </button>
+      </div>
+    </NavBarItem>
+  );
 
   const LanguageMenu = (
     <NavBarItem>
@@ -118,7 +197,7 @@ const NavBar = () => {
       </a>
       <div
         className={`dropdown-menu dropdown-menu-right ${
-          (activeNavBarMenu === "profile" && expand) && "show"
+          activeNavBarMenu === "profile" && expand && "show"
         }`}
       >
         <a
@@ -134,15 +213,13 @@ const NavBar = () => {
           className="dropdown-item"
           href="/#"
           onClick={(e) => {
-            e.preventDefault()
-            navigate('/setting')
+            e.preventDefault();
+            navigate("/setting");
           }}
         >
           AppSetting
         </a>
       </div>
-
-
     </NavBarItem>
   );
 
@@ -160,6 +237,7 @@ const NavBar = () => {
       </a>
       <div className="navbar-collapse collapse">
         <ul className="navbar-nav ml-auto">
+          {SportSelection}
           {LanguageMenu}
           {ProfileMenu}
         </ul>
